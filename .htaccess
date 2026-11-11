@@ -1,0 +1,16 @@
+Options -Indexes -MultiViews
+DirectoryIndex public/index.php
+<IfModule mod_rewrite.c>
+RewriteEngine On
+RewriteRule ^(?:app|config)(?:/|$) - [F,L,NC]
+RewriteRule ^(?:bootstrap\.php|README\.md|\.git|\.openai)(?:/|$) - [F,L,NC]
+RewriteRule ^public/ - [L]
+RewriteRule ^assets/(.*)$ public/assets/$1 [L]
+RewriteRule ^robots\.txt$ public/robots.txt [L]
+RewriteRule ^sitemap\.xml$ public/index.php [L]
+RewriteRule ^$ public/index.php [L]
+RewriteRule ^(.*)$ public/index.php [L]
+</IfModule>
+<FilesMatch "^(?:bootstrap\.php|README\.md|\.user\.ini|\.env)$">
+Require all denied
+</FilesMatch>

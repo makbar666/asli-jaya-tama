@@ -1,0 +1,1 @@
+<section class="section not-found"><div class="container"><span class="eyebrow">404 / HALAMAN TIDAK DITEMUKAN</span><h1>Halaman yang Anda cari tidak tersedia.</h1><p>Periksa kembali alamat halaman, atau kembali ke Beranda.</p><a class="button button-dark" href="/">Kembali ke Beranda</a></div></section>

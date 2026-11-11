@@ -1,0 +1,121 @@
+﻿/* Gerak singkat dan terarah; konten tetap terlihat saat JavaScript tidak aktif. */
+:root {
+  --ease-out: cubic-bezier(.22, 1, .36, 1);
+  --ease-soft: cubic-bezier(.25, .8, .25, 1);
+}
+
+@view-transition { navigation: auto; }
+::view-transition-old(root) { animation: page-out 170ms ease-in both; }
+::view-transition-new(root) { animation: page-in 290ms var(--ease-out) both; }
+@keyframes page-out { to { opacity: .65; transform: translateY(-5px); } }
+@keyframes page-in { from { opacity: .7; transform: translateY(8px); } }
+
+/* Teks dan foto pembuka masuk berurutan tanpa menunda interaksi. */
+.hero-copy > .eyebrow { animation: enter-up 520ms 40ms var(--ease-out) both; }
+.hero-copy > h1 { animation: enter-up 650ms 110ms var(--ease-out) both; }
+.hero-copy > p { animation: enter-up 650ms 190ms var(--ease-out) both; }
+.hero-copy > .action-row { animation: enter-up 650ms 270ms var(--ease-out) both; }
+.hero-visual { animation: enter-image 760ms 120ms var(--ease-out) both; }
+.page-intro-inner { animation: enter-up 600ms 70ms var(--ease-out) both; }
+@keyframes enter-up { from { opacity: 0; transform: translateY(17px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes enter-image { from { opacity: .45; transform: translateY(13px) scale(.985); } to { opacity: 1; transform: translateY(0) scale(1); } }
+
+/* Reveal dimulai hanya untuk elemen di bawah viewport dan hanya bila observer tersedia. */
+.motion-ready [data-motion]:not(.is-visible) {
+  opacity: 0;
+  transform: translateY(22px);
+}
+.motion-ready [data-motion] {
+  transition: opacity 680ms var(--ease-out), transform 680ms var(--ease-out);
+  transition-delay: var(--reveal-delay, 0ms);
+}
+.motion-ready [data-motion].is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Umpan balik kecil pada elemen yang benar-benar interaktif. */
+.main-nav > a:not(.nav-cta) { position: relative; transition: color 220ms ease; }
+.main-nav > a:not(.nav-cta)::after {
+  content: '';
+  position: absolute;
+  left: 0; right: 0; bottom: -8px;
+  height: 1px;
+  background: var(--gold);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 280ms var(--ease-out);
+}
+.main-nav > a:not(.nav-cta):hover::after,
+.main-nav > a:not(.nav-cta)[aria-current]::after { transform: scaleX(1); }
+.button, .nav-cta {
+  transition: background-color 230ms ease, color 230ms ease, border-color 230ms ease, transform 280ms var(--ease-out);
+}
+.button:hover, .nav-cta:hover { transform: translateY(-2px); }
+.button:active, .nav-cta:active { transform: translateY(0); }
+.button > span, .nav-cta > span, .text-link > span {
+  display: inline-block;
+  transition: transform 280ms var(--ease-out);
+}
+.button:hover > span, .nav-cta:hover > span, .text-link:hover > span { transform: translate(3px, -3px); }
+.project-card .project-image img, .video-card .video-image img, .gallery-item img {
+  transition: transform 500ms var(--ease-soft), filter 500ms var(--ease-soft);
+}
+.project-card:hover .project-image img, .video-card:hover .video-image img, .gallery-item:hover img { transform: scale(1.035); }
+.project-card:hover h3, .video-card:hover h3 { color: var(--gold-hover); }
+.project-card h3, .video-card h3 { transition: color 250ms ease; }
+.play-icon { transition: transform 320ms var(--ease-out), background-color 250ms ease; }
+.video-trigger:hover .play-icon { transform: translate(-50%, -50%) scale(1.09); background: var(--ivory); }
+.service-row { transition: padding-left 300ms var(--ease-out), color 250ms ease; }
+.service-row:hover { padding-left: 8px; }
+.filter-button { transition: color 220ms ease, border-color 220ms ease, transform 260ms var(--ease-out); }
+.filter-button:hover { transform: translateY(-2px); }
+.contact-form-wrap input, .contact-form-wrap select, .contact-form-wrap textarea {
+  transition: border-color 230ms ease, background-color 230ms ease;
+}
+.contact-form-wrap input:focus, .contact-form-wrap select:focus, .contact-form-wrap textarea:focus { border-color: var(--gold-hover); }
+
+/* Modal: iframe dihapus segera saat tutup, panel menyelesaikan transisi. */
+.video-modal { opacity: 0; transition: opacity 220ms ease; }
+.video-modal.is-open { opacity: 1; }
+.modal-panel { transform: translateY(14px) scale(.985); transition: transform 320ms var(--ease-out); }
+.video-modal.is-open .modal-panel { transform: translateY(0) scale(1); }
+.modal-backdrop { opacity: 0; transition: opacity 220ms ease; }
+.video-modal.is-open .modal-backdrop { opacity: 1; }
+.lightbox { animation: lightbox-in 220ms ease both; }
+.lightbox img { animation: lightbox-image-in 330ms var(--ease-out) both; }
+.lightbox.is-closing { animation: none; opacity: 0; transition: opacity 180ms ease; }
+.lightbox.is-closing img { animation: none; transform: scale(.98); transition: transform 180ms ease; }
+@keyframes lightbox-in { from { opacity: 0; } }
+@keyframes lightbox-image-in { from { opacity: 0; transform: scale(.98); } }
+
+@media (max-width: 1100px) {
+  .main-nav {
+    display: flex;
+    max-height: calc(100vh - 72px);
+    overflow-y: auto;
+    visibility: hidden;
+    opacity: 0;
+    transform: translateY(-10px);
+    pointer-events: none;
+    transition: opacity 260ms ease, transform 320ms var(--ease-out), visibility 320ms;
+  }
+  .main-nav.is-open {
+    visibility: visible;
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+  }
+  .main-nav > a:not(.nav-cta)::after { bottom: 7px; }
+  .menu-toggle span { transition: transform 260ms var(--ease-out), opacity 180ms ease; transform-origin: center; }
+  .menu-toggle[aria-expanded="true"] span:first-child { transform: translateY(7px) rotate(45deg); }
+  .menu-toggle[aria-expanded="true"] span:nth-child(2) { opacity: 0; }
+  .menu-toggle[aria-expanded="true"] span:last-child { transform: translateY(-7px) rotate(-45deg); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  @view-transition { navigation: none; }
+  *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; scroll-behavior: auto !important; }
+  .motion-ready [data-motion]:not(.is-visible) { opacity: 1; transform: none; }
+}
+

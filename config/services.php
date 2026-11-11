@@ -1,0 +1,7 @@
+<?php
+return [
+    ['slug'=>'custom-furniture','number'=>'01','title'=>'Custom Furniture','summary'=>'Furniture yang dibuat sesuai ukuran, fungsi, dan karakter ruang.','description'=>'Kebutuhan penyimpanan dan furnitur direncanakan dengan mempertimbangkan ukuran ruang, penggunaan sehari-hari, serta pilihan finishing.','examples'=>['Kabinet built-in','Kitchen set','Lemari pakaian','Kabinet TV','Solusi penyimpanan'],'image'=>null],
+    ['slug'=>'interior','number'=>'02','title'=>'Interior','summary'=>'Pengerjaan elemen interior untuk ruang yang nyaman dan tertata.','description'=>'Pengerjaan interior mencakup elemen ruang yang dibicarakan dan disepakati sesuai kebutuhan proyek.','examples'=>['Partisi','Panel dinding','Elemen plafon','Finishing interior'],'image'=>null],
+    ['slug'=>'eksterior','number'=>'03','title'=>'Eksterior','summary'=>'Detail dan finishing area luar sesuai lingkup pekerjaan yang disepakati.','description'=>'Konsultasikan kebutuhan area luar bangunan untuk menentukan lingkup, material, dan metode pengerjaan yang sesuai.','examples'=>['Detail fasad','Finishing eksterior'],'image'=>null],
+    ['slug'=>'home-building','number'=>'04','title'=>'Home & Building','summary'=>'Pekerjaan rumah dan bangunan berdasarkan kebutuhan proyek.','description'=>'Diskusikan rencana peningkatan atau pengerjaan bangunan agar tim dapat meninjau kebutuhan dan lingkupnya.','examples'=>['Peningkatan rumah','Pekerjaan renovasi terkait','Pekerjaan bangunan sesuai kesepakatan'],'image'=>null],
+];

@@ -1,0 +1,4 @@
+<?php $id = $video['drive_file_id'] ?? ''; $valid = (bool) preg_match('/^[A-Za-z0-9_-]{10,100}$/D', $id); ?>
+<article class="video-card" data-category="<?= e($video['category']) ?>"><button class="video-trigger" type="button" data-video-id="<?= $valid ? e($id) : '' ?>" data-title="<?= e($video['title']) ?>" <?= !$valid ? 'disabled' : '' ?> aria-label="Putar video <?= e($video['title']) ?>">
+  <span class="video-image media-frame"><?php if (!empty($video['thumbnail'])): ?><img src="<?= e($video['thumbnail']) ?>" alt="" width="720" height="450" loading="lazy"><?php else: ?><span>Thumbnail video</span><?php endif; ?><span class="play-icon" aria-hidden="true">▶</span></span>
+</button><div class="video-info"><span class="eyebrow"><?= e($video['category']) ?></span><h3><?= e($video['title']) ?></h3><?php if (!empty($video['duration'])): ?><span class="duration"><?= e($video['duration']) ?></span><?php endif; ?><p><?= e($video['description'] ?? '') ?></p></div></article>
