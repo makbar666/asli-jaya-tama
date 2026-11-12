@@ -19,7 +19,7 @@ return [
         ['src' => '/assets/images/hero/4.jpeg', 'alt' => 'Panel interior dan partisi kayu di area rumah', 'width' => 1200, 'height' => 1600],
         ['src' => '/assets/images/hero/5.jpeg', 'alt' => 'Lemari kayu custom di area kamar', 'width' => 900, 'height' => 1600],
     ],
-    'about_image' => null,
+    'about_image' => '/assets/images/hero/4.jpeg',
     'production_url' => null, // set to https://your-domain.tld for canonical URLs
     'seo_description' => 'CV Asli Jaya Tama melayani kebutuhan furniture custom, interior, eksterior, serta pekerjaan rumah dan bangunan. Konsultasikan proyek Anda melalui WhatsApp.',
 ];
