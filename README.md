@@ -38,7 +38,28 @@ Vercel memakai hasil statis di `dist/`; PHP **tidak dijalankan** di Vercel. Apli
 4. **Lewat GitHub + Dashboard Vercel:** unggah proyek ke repository GitHub termasuk folder `dist/`. Impor repo ke Vercel, pilih Framework Preset **Other**, Root Directory root proyek, Build Command kosong, dan Output Directory `dist` (sudah ditetapkan dalam `vercel.json`).
 5. Setelah domain final tersedia, isi `production_url` di `config/site.php` dengan URL HTTPS final tanpa slash penutup. Jalankan build ulang dan deploy ulang. Ini menghasilkan canonical URL, Open Graph URL, dan `dist/sitemap.xml` yang sesuai domain.
 
-Setelah mengubah `config/projects.php`, `config/videos.php`, `config/services.php`, atau kontak, **jalankan build statis ulang** dan deploy ulang `dist/`. Perubahan file PHP saja tidak mengubah halaman yang sudah dihosting di Vercel. File proyek PHP dan konfigurasi tidak disajikan kepada pengunjung karena Vercel hanya menayangkan isi `dist/`.
+Setelah mengubah `config/projects.php`, `config/videos.php`, `config/services.php`, atau kontak secara manual, **jalankan build statis ulang** dan deploy ulang `dist/`. Perubahan file PHP saja tidak mengubah halaman yang sudah dihosting di Vercel. File proyek PHP dan konfigurasi tidak disajikan kepada pengunjung karena Vercel hanya menayangkan isi `dist/`.
+
+### Sinkronisasi video Drive otomatis
+
+Workflow `.github/workflows/sync-drive-videos.yml` memeriksa folder Drive setiap 30 menit (menit 17 dan 47 UTC) dan bisa dijalankan manual dari tab **Actions → Sync Google Drive videos → Run workflow**. Pemeriksaan terjadwal dapat terlambat; unggahan baru tidak muncul seketika. Workflow ini:
+
+1. Membaca file video dari folder Drive publik `1lIegtho751s1vbYxGzqPKypC8QcPZVa_`.
+2. Menambahkan hanya ID yang belum ada. Judul/kategori video yang sudah dikurasi di `config/videos.php` tidak ditimpa. Video baru diberi kategori netral **Dokumentasi Proyek** dan thumbnail asli dari Drive.
+3. Menyimpan metadata baru di `config/drive_videos.json`, membangun ulang `dist/`, memeriksa aset, lalu commit dan push ke `main` jika ada perubahan.
+4. Jika repo ini sudah terhubung sebagai Git project Vercel dengan `main` sebagai production branch, push tersebut memicu deploy baru.
+
+Folder dan setiap video baru perlu dapat dibuka oleh pengunjung melalui tautan publik. Sinkronisasi **menambah** video baru; menghapus file di Drive tidak otomatis menghapus entri dari website. Ini mencegah video hilang karena kesalahan sementara saat membaca folder.
+
+Tidak ada secret wajib untuk folder publik saat ini. Parser halaman publik dipakai bila `GOOGLE_DRIVE_API_KEY` tidak tersedia. Untuk jalur API resmi yang lebih stabil, buat Google Cloud API key dengan Drive API aktif lalu simpan sebagai repository secret `GOOGLE_DRIVE_API_KEY` di **Settings → Secrets and variables → Actions**. Kode tetap bisa memakai halaman publik jika API gagal. Jangan menaruh API key dalam repository.
+
+Pastikan GitHub Actions aktif dan workflow memiliki izin `contents: write` agar bot dapat commit. Izin ini dinyatakan dalam workflow, tetapi kebijakan repository dapat membatasinya. Untuk uji lokal tanpa mengubah data:
+
+```powershell
+python scripts/sync_drive_videos.py --dry-run --php-bin "$env:TEMP\ajt-php82\php.exe"
+```
+
+Jika menjalankan sinkronisasi lokal secara nyata, jalankan tanpa `--dry-run`, lalu build statis dan push. Nama file generik dari Drive akan menjadi judul **Dokumentasi Video NN** sampai Anda mengeditnya secara manual.
 
 ## Deploy cPanel — bila semua file harus berada di `public_html`
 

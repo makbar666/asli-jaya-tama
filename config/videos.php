@@ -1,7 +1,7 @@
 <?php
 // Video bersumber dari folder Google Drive CV Asli Jaya Tama yang diberikan pemilik.
 // Judul menjelaskan tampilan yang terlihat; lokasi, tahun, dan durasi belum diklaim.
-return [
+$manual = [
     [
         'slug' => 'kabinet-merah-area-dapur',
         'title' => 'Kabinet Merah dan Area Dapur',
@@ -83,3 +83,38 @@ return [
         'featured' => false,
     ],
 ];
+
+$generatedFile = __DIR__ . '/drive_videos.json';
+if (!is_file($generatedFile)) return $manual;
+
+$generated = json_decode((string) file_get_contents($generatedFile), true, 512, JSON_THROW_ON_ERROR);
+if (!is_array($generated) || !array_is_list($generated)) {
+    throw new RuntimeException('Invalid generated video list.');
+}
+
+$known = [];
+foreach ($manual as $video) $known[$video['drive_file_id']] = true;
+$automatic = [];
+foreach ($generated as $video) {
+    if (!is_array($video)) continue;
+    $id = $video['drive_file_id'] ?? '';
+    $slug = $video['slug'] ?? '';
+    $thumbnail = $video['thumbnail'] ?? '';
+    if (!is_string($id) || !preg_match('/^[A-Za-z0-9_-]{10,100}$/D', $id)) continue;
+    if (!is_string($slug) || !preg_match('/^[a-z0-9]+(?:-[a-z0-9]+)*$/D', $slug)) continue;
+    if (!is_string($thumbnail) || !preg_match('~^/assets/images/thumbnails/[a-z0-9-]+\.(?:jpg|png|webp)$~D', $thumbnail)) continue;
+    if (isset($known[$id])) continue; // manually curated entries take precedence
+    $known[$id] = true;
+    $automatic[] = [
+        'slug' => $slug,
+        'title' => (string) ($video['title'] ?? 'Dokumentasi Proyek'),
+        'category' => (string) ($video['category'] ?? 'Dokumentasi Proyek'),
+        'description' => (string) ($video['description'] ?? 'Dokumentasi video CV Asli Jaya Tama.'),
+        'thumbnail' => $thumbnail,
+        'drive_file_id' => $id,
+        'duration' => null,
+        'featured' => (bool) ($video['featured'] ?? true),
+    ];
+}
+
+return array_merge($automatic, $manual);
