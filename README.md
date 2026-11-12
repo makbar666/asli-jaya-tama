@@ -2,8 +2,6 @@
 
 Website PHP 8.2+ tanpa database, framework, Composer, atau proses Node di server. Seluruh teks antarmuka berbahasa Indonesia. Galeri foto memakai lima foto yang tersedia di `public/assets/images/hero/`; daftar proyek detail tetap kosong sampai informasi proyek terverifikasi. Logo resmi berada di `public/assets/images/logo.png`.
 
-Tombol **Mode gelap** di navigasi mengganti tema terang/gelap. Pilihan disimpan di browser pengunjung; bila belum dipilih, situs mengikuti tema perangkat. Transisi warna menghormati `prefers-reduced-motion`.
-
 ## Menjalankan lokal
 
 1. Pasang PHP 8.2+ dan pastikan perintah `php` tersedia.

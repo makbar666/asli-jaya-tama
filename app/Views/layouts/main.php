@@ -12,6 +12,5 @@
 <script src="<?= asset('js/portfolio.js') ?>" defer></script>
 <script src="<?= asset('js/video-gallery.js') ?>" defer></script>
 <script src="<?= asset('js/motion.js') ?>" defer></script>
-<script src="<?= asset('js/theme.js') ?>" defer></script>
 <script src="<?= asset('js/hero-stack.js') ?>" defer></script>
 </body></html>

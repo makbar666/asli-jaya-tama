@@ -32,8 +32,6 @@
   line-height: 1.45;
 }
 
-html[data-theme="dark"] .process-step > span { color: #d0a968; }
-
 @media (max-width: 900px) {
   .process-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .process-step { min-height: 155px; }

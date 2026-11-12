@@ -6,7 +6,6 @@
 .photo-trigger:hover .photo-image img{transform:scale(1.035)}
 .photo-trigger:focus-visible{outline:2px solid var(--gold);outline-offset:5px}
 .photo-category{display:block;margin-top:16px;color:var(--gold-hover);font-size:.72rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase}
-html[data-theme="dark"] .photo-category{color:#d0a968}
 .photo-title{display:block;margin-top:7px;font:700 clamp(1.1rem,1.5vw,1.35rem)/1.35 var(--font-heading)}
 .photo-view{display:inline-block;margin-top:9px;padding-bottom:5px;border-bottom:1px solid var(--gold);font-size:.78rem;font-weight:700}
 .photo-section-intro{max-width:650px;margin:-12px 0 30px;color:var(--muted)}
