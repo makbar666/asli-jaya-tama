@@ -9,7 +9,8 @@
     <?php if (!empty($site['hero_gallery'])): ?>
       <div class="hero-visual hero-photo-stack" role="group" aria-label="Dokumentasi foto pekerjaan CV Asli Jaya Tama">
         <?php foreach ($site['hero_gallery'] as $index => $photo): ?>
-          <figure class="hero-photo-card"><img src="<?= e($photo['src']) ?>" alt="<?= e($photo['alt']) ?>" width="<?= (int) $photo['width'] ?>" height="<?= (int) $photo['height'] ?>" <?= $index === 2 ? 'fetchpriority="high"' : 'decoding="async"' ?>></figure>
+          <?php $position = ['far-left', 'left', 'center', 'right', 'far-right'][$index] ?? 'far-right'; ?>
+          <button class="hero-photo-card" type="button" data-position="<?= $position ?>" aria-label="Tampilkan foto <?= $index + 1 ?>: <?= e($photo['alt']) ?>" aria-pressed="<?= $index === 2 ? 'true' : 'false' ?>"><img src="<?= e($photo['src']) ?>" alt="" width="<?= (int) $photo['width'] ?>" height="<?= (int) $photo['height'] ?>" <?= $index === 2 ? 'fetchpriority="high"' : 'decoding="async"' ?>></button>
         <?php endforeach; ?>
       </div>
     <?php else: ?>

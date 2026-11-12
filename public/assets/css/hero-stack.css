@@ -17,6 +17,12 @@
   box-shadow: 0 10px 26px rgba(23, 20, 14, .16);
   overflow: hidden;
   transform-origin: center;
+  border: 0;
+  cursor: pointer;
+  transition: transform 780ms cubic-bezier(.22, 1, .36, 1),
+              translate 350ms cubic-bezier(.22, 1, .36, 1),
+              scale 350ms cubic-bezier(.22, 1, .36, 1),
+              box-shadow 350ms ease;
 }
 
 .hero-photo-card img {
@@ -24,27 +30,44 @@
   height: 100%;
   object-fit: cover;
   object-position: center;
+  transition: transform 450ms cubic-bezier(.22, 1, .36, 1);
 }
 
-.hero-photo-card:nth-child(1) {
+.hero-photo-card[data-position="far-left"] {
   z-index: 1;
   transform: translate(-50%, -50%) translate(-39%, -5%) rotate(-8deg) scale(.83);
 }
-.hero-photo-card:nth-child(2) {
+.hero-photo-card[data-position="left"] {
   z-index: 2;
   transform: translate(-50%, -50%) translate(-25%, 2%) rotate(-4deg) scale(.92);
 }
-.hero-photo-card:nth-child(3) {
+.hero-photo-card[data-position="center"] {
   z-index: 5;
   transform: translate(-50%, -50%);
 }
-.hero-photo-card:nth-child(4) {
+.hero-photo-card[data-position="right"] {
   z-index: 3;
   transform: translate(-50%, -50%) translate(25%, 1%) rotate(4deg) scale(.92);
 }
-.hero-photo-card:nth-child(5) {
+.hero-photo-card[data-position="far-right"] {
   z-index: 1;
   transform: translate(-50%, -50%) translate(39%, -6%) rotate(8deg) scale(.83);
+}
+
+.hero-photo-card:focus-visible {
+  z-index: 8;
+  outline: 3px solid var(--gold);
+  outline-offset: 3px;
+}
+
+@media (hover: hover) {
+  .hero-photo-card:hover {
+    z-index: 7;
+    translate: 0 -9px;
+    scale: 1.035;
+    box-shadow: 0 16px 32px rgba(23, 20, 14, .2);
+  }
+  .hero-photo-card:hover img { transform: scale(1.045); }
 }
 
 @media (max-width: 1100px) {
