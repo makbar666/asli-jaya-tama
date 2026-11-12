@@ -1,4 +1,22 @@
-<section class="hero"><div class="container hero-grid"><div class="hero-copy"><span class="eyebrow">CV ASLI JAYA TAMA</span><h1>Solusi Furniture, Interior &amp; Eksterior untuk Kebutuhan Ruang Anda</h1><p>Kami menghadirkan layanan furniture custom, interior, eksterior, serta pekerjaan rumah dan bangunan dengan perhatian pada fungsi, detail, dan kualitas pengerjaan.</p><div class="action-row"><a class="button button-dark" href="/portofolio">Lihat Portofolio <span aria-hidden="true">↗</span></a><a class="button button-outline" href="<?= e(wa_link('Halo, saya ingin konsultasi proyek.')) ?>" target="_blank" rel="noopener">Konsultasi Proyek</a></div></div><div class="hero-visual media-frame"><?php if ($site['hero_image']): ?><img src="<?= e($site['hero_image']) ?>" alt="Dokumentasi pekerjaan <?= e($site['company']) ?>" width="920" height="740" fetchpriority="high"><?php else: ?><div class="media-placeholder"><span>01 / DOKUMENTASI</span><strong>Ruang untuk karya<br>yang sesungguhnya.</strong><small>Foto proyek asli dapat ditambahkan melalui konfigurasi situs.</small></div><?php endif; ?></div></div></section>
+<section class="hero">
+  <div class="container hero-grid">
+    <div class="hero-copy">
+      <span class="eyebrow">CV ASLI JAYA TAMA</span>
+      <h1>Solusi Furniture, Interior &amp; Eksterior untuk Kebutuhan Ruang Anda</h1>
+      <p>Kami menghadirkan layanan furniture custom, interior, eksterior, serta pekerjaan rumah dan bangunan dengan perhatian pada fungsi, detail, dan kualitas pengerjaan.</p>
+      <div class="action-row"><a class="button button-dark" href="/portofolio">Lihat Portofolio <span aria-hidden="true">↗</span></a><a class="button button-outline" href="<?= e(wa_link('Halo, saya ingin konsultasi proyek.')) ?>" target="_blank" rel="noopener">Konsultasi Proyek</a></div>
+    </div>
+    <?php if (!empty($site['hero_gallery'])): ?>
+      <div class="hero-visual hero-photo-stack" role="group" aria-label="Dokumentasi foto pekerjaan CV Asli Jaya Tama">
+        <?php foreach ($site['hero_gallery'] as $index => $photo): ?>
+          <figure class="hero-photo-card"><img src="<?= e($photo['src']) ?>" alt="<?= e($photo['alt']) ?>" width="<?= (int) $photo['width'] ?>" height="<?= (int) $photo['height'] ?>" <?= $index === 2 ? 'fetchpriority="high"' : 'decoding="async"' ?>></figure>
+        <?php endforeach; ?>
+      </div>
+    <?php else: ?>
+      <div class="hero-visual media-frame"><?php if ($site['hero_image']): ?><img src="<?= e($site['hero_image']) ?>" alt="Dokumentasi pekerjaan <?= e($site['company']) ?>" width="920" height="740" fetchpriority="high"><?php else: ?><div class="media-placeholder"><span>01 / DOKUMENTASI</span><strong>Ruang untuk karya<br>yang sesungguhnya.</strong><small>Foto proyek asli dapat ditambahkan melalui konfigurasi situs.</small></div><?php endif; ?></div>
+    <?php endif; ?>
+  </div>
+</section>
 
 <section class="section intro-section"><div class="container intro-grid"><div class="intro-visual media-frame"><?php if ($site['about_image']): ?><img src="<?= e($site['about_image']) ?>" alt="Detail hasil pengerjaan <?= e($site['company']) ?>" width="760" height="700" loading="lazy"><?php else: ?><div class="media-placeholder media-placeholder-light"><span>DETAIL PENGERJAAN</span><strong>Fungsi. Material.<br>Finishing.</strong></div><?php endif; ?></div><div class="intro-copy"><span class="eyebrow">TENTANG KAMI</span><h2>Mengenal CV Asli Jaya Tama</h2><p>Asli Jaya Interior menangani kebutuhan furniture custom, pengerjaan interior dan eksterior, serta pekerjaan rumah dan bangunan. Setiap kebutuhan ruang dibicarakan dari fungsi, ukuran, pilihan material, hingga hasil akhir yang diharapkan.</p><p>Kami percaya hasil yang baik berawal dari pemahaman yang jelas terhadap kebutuhan pengguna ruang dan perhatian pada detail pengerjaan.</p><a class="text-link" href="/tentang-kami">Selengkapnya tentang kami <span aria-hidden="true">↗</span></a></div></div></section>
 

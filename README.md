@@ -71,6 +71,8 @@ Unggah **seluruh isi proyek** ke `public_html/`. Simpan `.htaccess` di root, ser
 
 Edit `config/site.php`. Isi `logo` dengan path seperti `/assets/images/branding/logo.webp` setelah mengunggah logo asli ke `public/assets/images/branding/`. Isi `hero_image` dan `about_image` dengan foto proyek asli. `email` dan `address` opsional; biarkan `null` bila belum tersedia. Nomor WhatsApp untuk URL menggunakan format internasional tanpa `+`.
 
+Foto bertumpuk pada Beranda diatur melalui `hero_gallery` dalam file yang sama. Lima foto saat ini berada di `public/assets/images/hero/`; urutan ketiga adalah foto utama di depan. Untuk mengganti foto, ubah path dan teks `alt`, lalu jalankan build statis ulang sebelum deploy Vercel.
+
 ### Menambah proyek
 
 Unggah foto ke `public/assets/images/projects/`, sebaiknya WebP dengan ukuran yang sesuai kebutuhan tampilan. Tambahkan **satu entri** ke `config/projects.php`:
