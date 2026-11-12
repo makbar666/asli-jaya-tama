@@ -1,0 +1,8 @@
+/* Dokumentasi berasal dari video vertikal; rasio kartu menjaga subjek tetap terlihat. */
+.video-image {
+  aspect-ratio: 3 / 4;
+}
+.video-image > img {
+  object-fit: cover;
+  object-position: center;
+}
