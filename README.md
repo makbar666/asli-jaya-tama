@@ -1,6 +1,6 @@
 # CV Asli Jaya Tama — Company Profile
 
-Website PHP 8.2+ tanpa database, framework, Composer, atau proses Node di server. Seluruh teks antarmuka berbahasa Indonesia. Konfigurasi proyek dan video **kosong secara sengaja** sampai dokumentasi pekerjaan asli ditambahkan. Logo resmi berada di `public/assets/images/logo.png`.
+Website PHP 8.2+ tanpa database, framework, Composer, atau proses Node di server. Seluruh teks antarmuka berbahasa Indonesia. Galeri foto memakai lima foto yang tersedia di `public/assets/images/hero/`; daftar proyek detail tetap kosong sampai informasi proyek terverifikasi. Logo resmi berada di `public/assets/images/logo.png`.
 
 Tombol **Mode gelap** di navigasi mengganti tema terang/gelap. Pilihan disimpan di browser pengunjung; bila belum dipilih, situs mengikuti tema perangkat. Transisi warna menghormati `prefers-reduced-motion`.
 
@@ -38,7 +38,7 @@ Vercel memakai hasil statis di `dist/`; PHP **tidak dijalankan** di Vercel. Apli
 4. **Lewat GitHub + Dashboard Vercel:** unggah proyek ke repository GitHub termasuk folder `dist/`. Impor repo ke Vercel, pilih Framework Preset **Other**, Root Directory root proyek, Build Command kosong, dan Output Directory `dist` (sudah ditetapkan dalam `vercel.json`).
 5. Setelah domain final tersedia, isi `production_url` di `config/site.php` dengan URL HTTPS final tanpa slash penutup. Jalankan build ulang dan deploy ulang. Ini menghasilkan canonical URL, Open Graph URL, dan `dist/sitemap.xml` yang sesuai domain.
 
-Setelah mengubah `config/projects.php`, `config/videos.php`, `config/services.php`, atau kontak secara manual, **jalankan build statis ulang** dan deploy ulang `dist/`. Perubahan file PHP saja tidak mengubah halaman yang sudah dihosting di Vercel. File proyek PHP dan konfigurasi tidak disajikan kepada pengunjung karena Vercel hanya menayangkan isi `dist/`.
+Setelah mengubah `config/projects.php`, `config/photos.php`, `config/videos.php`, `config/services.php`, atau kontak secara manual, **jalankan build statis ulang** dan deploy ulang `dist/`. Perubahan file PHP saja tidak mengubah halaman yang sudah dihosting di Vercel. File proyek PHP dan konfigurasi tidak disajikan kepada pengunjung karena Vercel hanya menayangkan isi `dist/`.
 
 ### Sinkronisasi video Drive otomatis
 
@@ -73,6 +73,10 @@ Edit `config/site.php`. Isi `logo` dengan path seperti `/assets/images/branding/
 
 Foto bertumpuk pada Beranda diatur melalui `hero_gallery` dalam file yang sama. Lima foto saat ini berada di `public/assets/images/hero/`; urutan ketiga adalah foto utama di depan. Untuk mengganti foto, ubah path dan teks `alt`, lalu jalankan build statis ulang sebelum deploy Vercel.
 Kartu foto berganti posisi setiap 5 detik, berhenti sementara saat di-hover atau mendapat fokus, dan bisa dipilih dengan klik. Pengunjung yang mengaktifkan `prefers-reduced-motion` tetap dapat memilih foto tanpa pergantian otomatis.
+
+### Mengelola galeri foto
+
+Bagian **Hasil Pekerjaan Kami** dan halaman Portofolio membaca `config/photos.php`. Untuk menambah foto, unggah berkas ke `public/assets/images/`, lalu tambah satu entri berisi `title`, `category`, `src`, `alt`, `width`, dan `height`. Judul dan kategori harus sesuai isi foto; jangan menambahkan lokasi atau tahun yang belum terverifikasi. Foto dapat diperbesar dan kategori di halaman Portofolio dibuat otomatis. Jalankan build statis ulang sebelum deploy ke Vercel.
 
 ### Menambah proyek
 

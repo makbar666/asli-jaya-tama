@@ -23,7 +23,23 @@
 
 <section class="section services-section"><div class="container"><div class="section-heading"><div><span class="eyebrow">APA YANG KAMI KERJAKAN</span><h2>Layanan Kami</h2></div><p>Layanan yang dapat disesuaikan dengan kebutuhan ruang dan lingkup proyek Anda.</p></div><div class="service-list"><?php foreach ($services as $service): ?><a class="service-row" href="/layanan#<?= e($service['slug']) ?>"><span class="service-number"><?= e($service['number']) ?></span><h3><?= e($service['title']) ?></h3><p><?= e($service['summary']) ?></p><span class="arrow" aria-hidden="true">↗</span></a><?php endforeach; ?></div></div></section>
 
-<section class="section projects-section"><div class="container"><div class="section-heading"><div><span class="eyebrow">DOKUMENTASI KAMI</span><h2>Hasil Pekerjaan Kami</h2></div><a class="text-link" href="/portofolio">Lihat Semua Proyek <span aria-hidden="true">↗</span></a></div><?php if ($projects): ?><div class="project-grid"><?php foreach ($projects as $project) partial('project-card',['project'=>$project]); ?></div><?php else: ?><div class="empty-feature"><div class="empty-feature-art" aria-hidden="true"><span></span><span></span><span></span></div><div><span class="eyebrow">PORTOFOLIO</span><h3>Dokumentasi proyek sedang disiapkan.</h3><p>Foto dan keterangan pekerjaan asli akan tampil di sini setelah ditambahkan ke daftar proyek.</p><a class="text-link" href="/kontak">Diskusikan kebutuhan Anda <span aria-hidden="true">↗</span></a></div></div><?php endif; ?></div></section>
+<section class="section projects-section">
+  <div class="container">
+    <div class="section-heading">
+      <div><span class="eyebrow">DOKUMENTASI KAMI</span><h2>Hasil Pekerjaan Kami</h2></div>
+      <a class="text-link" href="/portofolio">Lihat Semua Foto <span aria-hidden="true">↗</span></a>
+    </div>
+    <?php if ($projects): ?>
+      <div class="project-grid portfolio-projects"><?php foreach ($projects as $project) partial('project-card', ['project' => $project]); ?></div>
+    <?php endif; ?>
+    <?php if ($photos): ?>
+      <?php if ($projects): ?><h3 class="portfolio-photos-heading">Dokumentasi Foto</h3><?php endif; ?>
+      <div class="photo-grid portfolio-photos"><?php foreach ($photos as $photo) partial('photo-card', ['photo' => $photo]); ?></div>
+    <?php elseif (!$projects): ?>
+      <div class="empty-inline"><p>Dokumentasi foto pekerjaan akan ditampilkan setelah foto asli ditambahkan.</p></div>
+    <?php endif; ?>
+  </div>
+</section>
 
 <section class="section videos-section"><div class="container"><div class="section-heading"><div><span class="eyebrow">VIDEO REVIEW</span><h2>Lihat Lebih Dekat Hasil Pengerjaan Kami</h2></div><p>Dokumentasi video untuk melihat detail, tampilan, dan hasil akhir pekerjaan CV Asli Jaya Tama.</p></div><?php if ($videos): ?><div class="video-grid"><?php foreach ($videos as $video) partial('video-card',['video'=>$video]); ?></div><?php else: ?><div class="empty-inline"><p>Video dokumentasi akan ditampilkan setelah tautan Google Drive dan thumbnail asli tersedia.</p></div><?php endif; ?><a class="text-link section-end-link" href="/video-review">Lihat Semua Video <span aria-hidden="true">↗</span></a></div></section>
 

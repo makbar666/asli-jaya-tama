@@ -14,7 +14,7 @@
       grid.dispatchEvent(new Event('galleryfilter'));
     });
     grid.dataset.activeFilter = 'all';
-    if (grid.id === 'projects') {
+    if (grid.querySelector('[data-category]')) {
       grid.addEventListener('galleryfilter', () => {
         let count = 0;
         grid.querySelectorAll('[data-category]').forEach(card => {
