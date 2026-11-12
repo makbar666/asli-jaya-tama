@@ -7,6 +7,7 @@ return [
     'whatsapp_international' => '6287833033215',
     'instagram_handle' => '@cv_aslijayatama',
     'instagram_url' => 'https://www.instagram.com/cv_aslijayatama/',
+    'tiktok_url' => 'https://www.tiktok.com/@asli.jaya.tama',
     'official_url' => 'https://lynk.id/ajt_official',
     'email' => null,
     'address' => null,

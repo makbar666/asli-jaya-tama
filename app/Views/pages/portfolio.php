@@ -17,4 +17,5 @@
     <div class="empty-page"><span class="eyebrow">DOKUMENTASI PROYEK</span><h2>Portofolio sedang dipersiapkan.</h2><p>Foto dan informasi pekerjaan akan ditampilkan di sini setelah tersedia.</p><a class="button button-dark" href="<?= e(wa_link('Halo, saya ingin melihat contoh pekerjaan dan konsultasi proyek.')) ?>" target="_blank" rel="noopener">Tanya via WhatsApp <span aria-hidden="true">↗</span></a></div>
   <?php endif; ?>
 </div></section>
+<?php partial('social-video-cta', ['heading' => 'Lihat Video Pengerjaan Kami', 'copy' => 'Ingin melihat detail pekerjaan dalam video? Kunjungi Instagram atau TikTok resmi kami.']); ?>
 <?php partial('whatsapp-cta'); ?>

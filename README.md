@@ -71,6 +71,8 @@ Unggah **seluruh isi proyek** ke `public_html/`. Simpan `.htaccess` di root, ser
 
 Edit `config/site.php`. Isi `logo` dengan path seperti `/assets/images/branding/logo.webp` setelah mengunggah logo asli ke `public/assets/images/branding/`. Isi `hero_image` dan `about_image` dengan foto proyek asli. `email` dan `address` opsional; biarkan `null` bila belum tersedia. Nomor WhatsApp untuk URL menggunakan format internasional tanpa `+`.
 
+Tautan Instagram dan TikTok pada bagian dokumentasi di halaman Portofolio dan Video Review diatur melalui `instagram_url` dan `tiktok_url` dalam file yang sama. Ubah keduanya jika akun resmi berpindah.
+
 Foto bertumpuk pada Beranda diatur melalui `hero_gallery` dalam file yang sama. Lima foto saat ini berada di `public/assets/images/hero/`; urutan ketiga adalah foto utama di depan. Untuk mengganti foto, ubah path dan teks `alt`, lalu jalankan build statis ulang sebelum deploy Vercel.
 Kartu foto berganti posisi setiap 5 detik, berhenti sementara saat di-hover atau mendapat fokus, dan bisa dipilih dengan klik. Pengunjung yang mengaktifkan `prefers-reduced-motion` tetap dapat memilih foto tanpa pergantian otomatis.
 
