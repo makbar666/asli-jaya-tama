@@ -1,6 +1,6 @@
 # CV Asli Jaya Tama — Company Profile
 
-Website PHP 8.2+ tanpa database, framework, Composer, atau proses Node di server. Seluruh teks antarmuka berbahasa Indonesia. Konfigurasi proyek dan video **kosong secara sengaja** sampai dokumentasi pekerjaan asli ditambahkan. Monogram `AJ` adalah pengganti sementara, bukan logo resmi.
+Website PHP 8.2+ tanpa database, framework, Composer, atau proses Node di server. Seluruh teks antarmuka berbahasa Indonesia. Konfigurasi proyek dan video **kosong secara sengaja** sampai dokumentasi pekerjaan asli ditambahkan. Logo resmi berada di `public/assets/images/logo.png`.
 
 Tombol **Mode gelap** di navigasi mengganti tema terang/gelap. Pilihan disimpan di browser pengunjung; bila belum dipilih, situs mengikuti tema perangkat. Transisi warna menghormati `prefers-reduced-motion`.
 

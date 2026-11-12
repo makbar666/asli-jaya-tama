@@ -10,7 +10,7 @@ return [
     'official_url' => 'https://lynk.id/ajt_official',
     'email' => null,
     'address' => null,
-    'logo' => null, // e.g. '/assets/images/branding/logo.webp'
+    'logo' => '/assets/images/logo.png',
     'hero_image' => null, // use a verified company project photograph
     'about_image' => null,
     'production_url' => null, // set to https://your-domain.tld for canonical URLs

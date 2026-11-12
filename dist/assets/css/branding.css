@@ -1,0 +1,16 @@
+.brand-logo {
+  width: 60px;
+  height: 60px;
+  object-fit: contain;
+  flex: none;
+}
+.footer .brand-logo {
+  width: 72px;
+  height: 72px;
+  background: #f7f5f0;
+  padding: 3px;
+}
+@media (max-width: 400px) {
+  .brand-logo { width: 52px; height: 52px; }
+  .footer .brand-logo { width: 64px; height: 64px; }
+}

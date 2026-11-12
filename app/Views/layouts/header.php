@@ -16,9 +16,10 @@ $ogImage = $site['hero_image'] ?? null;
 <?php if ($canonical): ?><meta property="og:url" content="<?= e($canonical) ?>"><?php endif; ?>
 <?php if ($ogImage && $base): ?><meta property="og:image" content="<?= e($base . $ogImage) ?>"><?php endif; ?>
 <meta name="theme-color" content="#111111">
+<?php if ($site['logo']): ?><link rel="icon" type="image/png" href="<?= e($site['logo']) ?>"><?php endif; ?>
 <script src="<?= asset('js/theme-init.js') ?>"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Libre+Baskerville:wght@400;700&display=swap" rel="stylesheet">
-<?php foreach (['variables','base','layout','components','responsive','motion','theme'] as $css): ?><link rel="stylesheet" href="<?= asset('css/'.$css.'.css') ?>"><?php endforeach; ?>
+<?php foreach (['variables','base','layout','components','responsive','motion','theme','branding'] as $css): ?><link rel="stylesheet" href="<?= asset('css/'.$css.'.css') ?>"><?php endforeach; ?>
 <?php if ($base): ?><script type="application/ld+json"><?= json_encode(['@context'=>'https://schema.org','@type'=>'HomeAndConstructionBusiness','name'=>$site['company'],'url'=>$base,'telephone'=>'+'.$site['whatsapp_international'],'sameAs'=>[$site['instagram_url'],$site['official_url']]], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_HEX_TAG | JSON_HEX_AMP) ?></script><?php endif; ?>
 </head>
