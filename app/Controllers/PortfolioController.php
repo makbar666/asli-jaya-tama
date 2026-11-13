@@ -3,6 +3,7 @@ namespace App\Controllers;
 use App\Core\Controller;
 final class PortfolioController extends Controller {
     public function index(): void { $this->render('portfolio',['title'=>'Portofolio','description'=>'Lihat dokumentasi foto furniture dan elemen ruang custom hasil pengerjaan CV Asli Jaya Tama.','projects'=>config('projects'),'photos'=>config('photos')]); }
+    public function cmsDetail(): void { $this->render('project-cms',['title'=>'Detail Proyek','description'=>'Lihat dokumentasi proyek custom CV Asli Jaya Tama.']); }
     public function detail(string $slug): void {
         $project = null;
         foreach (config('projects') as $item) if (($item['slug'] ?? '') === $slug) { $project=$item; break; }

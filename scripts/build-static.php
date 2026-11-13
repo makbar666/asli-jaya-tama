@@ -53,6 +53,7 @@ $routes = [
     '/tentang-kami' => 'tentang-kami.html',
     '/layanan' => 'layanan.html',
     '/portofolio' => 'portofolio.html',
+    '/proyek' => 'proyek.html',
     '/video-review' => 'video-review.html',
     '/kontak' => 'kontak.html',
     '__404__' => '404.html',
@@ -71,6 +72,13 @@ foreach ($projects as $project) {
 
 copyDirectory($root . DIRECTORY_SEPARATOR . 'public' . DIRECTORY_SEPARATOR . 'assets', $temporary . DIRECTORY_SEPARATOR . 'assets');
 copy($root . DIRECTORY_SEPARATOR . 'public' . DIRECTORY_SEPARATOR . 'robots.txt', $temporary . DIRECTORY_SEPARATOR . 'robots.txt');
+require_once $root . DIRECTORY_SEPARATOR . 'scripts' . DIRECTORY_SEPARATOR . 'content-fallback.php';
+file_put_contents($temporary . DIRECTORY_SEPARATOR . 'content-fallback.json', json_encode(contentFallback($root), JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_THROW_ON_ERROR));
+foreach (['login.html', 'admin.html', 'proyek.html'] as $staticPage) {
+    if (is_file($root . DIRECTORY_SEPARATOR . 'public' . DIRECTORY_SEPARATOR . $staticPage)) {
+        copy($root . DIRECTORY_SEPARATOR . 'public' . DIRECTORY_SEPARATOR . $staticPage, $temporary . DIRECTORY_SEPARATOR . $staticPage);
+    }
+}
 
 foreach ($routes as $route => $file) {
     $target = $temporary . DIRECTORY_SEPARATOR . str_replace('/', DIRECTORY_SEPARATOR, $file);

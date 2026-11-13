@@ -1,0 +1,9 @@
+{
+  "private": true,
+  "name": "cv-asli-jaya-tama-cms",
+  "version": "1.0.0",
+  "description": "Neon-backed content API for Asli Jaya Interior",
+  "dependencies": {
+    "@neondatabase/serverless": "1.2.0"
+  }
+}

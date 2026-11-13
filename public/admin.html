@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="robots" content="noindex,nofollow">
+  <title>Kelola Konten | Asli Jaya Interior</title>
+  <link rel="stylesheet" href="/assets/css/admin.css">
+  <script src="/assets/js/admin.js" defer></script>
+</head>
+<body class="admin-page">
+  <header class="admin-header"><div class="admin-header-inner">
+    <a class="admin-brand" href="/"><img src="/assets/images/logo.png" alt="Logo CV Asli Jaya Tama" width="48" height="48"><span>ASLI JAYA <small>CMS</small></span></a>
+    <div class="admin-account"><span id="admin-email"></span><a href="/" target="_blank" rel="noopener">Lihat situs ↗</a><button id="logout-button" type="button">Keluar</button></div>
+  </div></header>
+
+  <main class="admin-layout" id="admin-main" hidden>
+    <aside class="admin-sidebar" aria-label="Jenis konten">
+      <p class="admin-eyebrow">KONTEN SITUS</p>
+      <button class="admin-tab is-active" type="button" data-type="project" aria-pressed="true">Proyek</button>
+      <button class="admin-tab" type="button" data-type="photo" aria-pressed="false">Foto</button>
+      <button class="admin-tab" type="button" data-type="video" aria-pressed="false">Video</button>
+      <p class="admin-sidebar-note">Konten dari konfigurasi situs tetap tersedia. Perubahan di sini disimpan di Neon.</p>
+    </aside>
+
+    <section class="admin-content">
+      <div class="admin-heading"><div><span class="admin-eyebrow">DOKUMENTASI</span><h1 id="section-title">Proyek</h1><p id="section-copy">Kelola informasi proyek custom dan galeri fotonya.</p></div><button class="admin-button" id="new-button" type="button">Tambah konten</button></div>
+      <p id="admin-message" class="admin-message" role="status" hidden></p>
+      <div class="admin-list" id="content-list" aria-live="polite"></div>
+    </section>
+
+    <section class="editor-backdrop" id="editor-backdrop" hidden>
+      <div class="editor-panel" role="dialog" aria-modal="true" aria-labelledby="editor-title">
+        <div class="editor-head"><div><span class="admin-eyebrow">EDITOR KONTEN</span><h2 id="editor-title">Tambah konten</h2></div><button class="editor-close" id="editor-close" type="button" aria-label="Tutup editor">×</button></div>
+        <form id="content-form">
+          <input name="id" type="hidden"><input name="type" type="hidden">
+          <div class="form-grid">
+            <div class="form-field form-wide"><label for="entry-title">Judul <span>*</span></label><input id="entry-title" name="title" maxlength="120" required></div>
+            <div class="form-field"><label for="entry-slug">Slug <span>*</span></label><input id="entry-slug" name="slug" pattern="[a-z0-9]+(-[a-z0-9]+)*" maxlength="100" required><small>Huruf kecil, angka, dan tanda hubung.</small></div>
+            <div class="form-field"><label for="entry-category">Kategori <span>*</span></label><input id="entry-category" name="category" maxlength="80" required></div>
+            <div class="form-field form-wide"><label for="entry-media">URL foto utama / thumbnail <span>*</span></label><input id="entry-media" name="media_url" type="text" maxlength="2000" placeholder="/assets/images/... atau https://..." required><small>CMS menyimpan tautan gambar. Unggah file ke penyimpanan Anda terlebih dahulu.</small></div>
+            <div class="form-field form-wide" data-field="alt"><label for="entry-alt">Teks alternatif foto <span>*</span></label><input id="entry-alt" name="alt_text" maxlength="200" placeholder="Jelaskan apa yang terlihat pada foto"></div>
+            <div class="form-field form-wide" data-field="description"><label for="entry-description">Deskripsi</label><textarea id="entry-description" name="description" rows="4" maxlength="5000"></textarea></div>
+            <div class="form-field form-wide" data-field="gallery"><label for="entry-gallery">Galeri foto tambahan</label><textarea id="entry-gallery" name="gallery" rows="3" placeholder="Satu URL gambar per baris"></textarea></div>
+            <div class="form-field" data-field="drive"><label for="entry-drive">ID file Google Drive <span>*</span></label><input id="entry-drive" name="drive_file_id" maxlength="100" placeholder="ID dari tautan /file/d/ID/view"></div>
+            <div class="form-field" data-field="duration"><label for="entry-duration">Durasi (opsional)</label><input id="entry-duration" name="duration" maxlength="30" placeholder="01:25"></div>
+            <div class="form-field" data-field="location"><label for="entry-location">Lokasi (opsional)</label><input id="entry-location" name="location" maxlength="120"></div>
+            <div class="form-field" data-field="year"><label for="entry-year">Tahun (opsional)</label><input id="entry-year" name="year" type="number" min="1900" max="2100"></div>
+            <div class="form-field" data-field="width"><label for="entry-width">Lebar foto (px)</label><input id="entry-width" name="image_width" type="number" min="1" max="20000"></div>
+            <div class="form-field" data-field="height"><label for="entry-height">Tinggi foto (px)</label><input id="entry-height" name="image_height" type="number" min="1" max="20000"></div>
+            <div class="form-field"><label for="entry-order">Urutan tampil</label><input id="entry-order" name="sort_order" type="number" min="0" max="100000" value="100"></div>
+            <div class="form-field"><label for="entry-status">Status</label><select id="entry-status" name="status"><option value="published">Tayang</option><option value="draft">Draf</option><option value="hidden">Sembunyikan</option></select></div>
+            <label class="form-check"><input name="featured" type="checkbox"> Tampilkan di Beranda</label>
+          </div>
+          <p class="admin-message" id="editor-message" role="alert" hidden></p>
+          <div class="editor-actions"><button class="admin-button" type="submit">Simpan konten</button><button class="admin-button-secondary" id="cancel-button" type="button">Batal</button><button class="admin-button-danger" id="delete-button" type="button" hidden>Hapus</button></div>
+        </form>
+      </div>
+    </section>
+  </main>
+  <div id="admin-loading" class="admin-loading">Memuat CMS…</div>
+</body>
+</html>

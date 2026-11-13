@@ -40,6 +40,21 @@ Vercel memakai hasil statis di `dist/`; PHP **tidak dijalankan** di Vercel. Apli
 
 Setelah mengubah `config/projects.php`, `config/photos.php`, `config/videos.php`, `config/services.php`, atau kontak secara manual, **jalankan build statis ulang** dan deploy ulang `dist/`. Perubahan file PHP saja tidak mengubah halaman yang sudah dihosting di Vercel. File proyek PHP dan konfigurasi tidak disajikan kepada pengunjung karena Vercel hanya menayangkan isi `dist/`.
 
+### CMS dengan database Neon
+
+CMS tersedia di `/login.html` setelah database dan variabel lingkungan dikonfigurasi. Editor berada di `/admin.html` dan mengelola **proyek, foto, serta video**. Konten awal dari file PHP tetap tampil; perubahan CMS di Neon mengganti entri yang memiliki jenis dan slug sama. Video baru dari sinkronisasi Drive tetap muncul sebagai konten awal. Konten yang disembunyikan melalui CMS tidak tampil di situs.
+
+1. Buat proyek PostgreSQL gratis di [Neon](https://neon.com/). Salin *connection string* yang memakai SSL.
+2. Buka **SQL Editor** Neon dan jalankan seluruh isi `database/schema.sql` satu kali.
+3. Jalankan `npm ci` di komputer pengembangan. Lalu jalankan `node scripts/hash-password.mjs` dan ketik kata sandi admin minimal 12 karakter. Skrip mencetak hash; kata sandi asli tidak perlu disimpan di repo.
+4. Buat rahasia sesi dengan `node -e "console.log(require('node:crypto').randomBytes(32).toString('base64url'))"`.
+5. Di **Vercel → Project Settings → Environment Variables**, tambahkan `DATABASE_URL`, `CMS_ADMIN_EMAIL`, `CMS_PASSWORD_HASH`, dan `CMS_SESSION_SECRET`. Simpan keempatnya sebagai **Secret** untuk Production. Lihat `.env.example` untuk nama variabel. Jangan menaruh nilainya di Git atau JavaScript browser.
+6. Deploy ulang proyek Vercel, lalu buka `/login.html`. Jika login menampilkan pesan belum dikonfigurasi, periksa variabel dan jalankan ulang deployment. Jika muncul kesalahan server, pastikan tabel SQL sudah dibuat.
+
+Admin dapat mengisi URL foto `/assets/...` yang sudah ada, atau URL gambar HTTPS dari penyimpanan eksternal. **Database hanya menyimpan metadata dan tautan; CMS ini belum mengunggah file gambar.** Untuk menambah foto ke folder `public/assets/`, unggah lewat Git dan deploy ulang; untuk video, isi ID file Google Drive publik. Desain, bahan, dan konten bisnis lain masih di file konfigurasi. Halaman detail proyek yang dibuat lewat CMS memakai `/proyek?slug=...`; isinya langsung diperbarui dari Neon, tetapi metadata SEO per proyek memerlukan pengembangan server rendering atau build ulang.
+
+Situs PHP di cPanel tetap dapat berjalan memakai konten konfigurasi. API CMS menggunakan Vercel Functions (Node.js tanpa proses yang terus berjalan), sehingga halaman CMS memerlukan Vercel dan tidak tersedia pada deploy cPanel standar. Untuk pengujian lokal lengkap, bangun `dist/` dengan PHP, lalu jalankan `npx vercel dev` dengan variabel lingkungan Neon yang sudah diatur pada proyek Vercel terhubung. Server PHP lokal sendiri hanya menyajikan halaman publik dan tidak menjalankan API Vercel.
+
 ### Sinkronisasi video Drive otomatis
 
 Workflow `.github/workflows/sync-drive-videos.yml` memeriksa folder Drive setiap 30 menit (menit 17 dan 47 UTC) dan bisa dijalankan manual dari tab **Actions → Sync Google Drive videos → Run workflow**. Pemeriksaan terjadwal dapat terlambat; unggahan baru tidak muncul seketika. Workflow ini:

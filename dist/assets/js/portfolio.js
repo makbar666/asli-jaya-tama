@@ -1,35 +1,39 @@
 (() => {
   document.querySelectorAll('.filter-bar').forEach(bar => {
     const grid = document.getElementById(bar.dataset.filterTarget);
+    if (grid) grid.dataset.activeFilter = 'all';
+  });
+  document.addEventListener('click', event => {
+    const button = event.target.closest('.filter-bar [data-filter]');
+    if (!button) return;
+    const bar = button.closest('.filter-bar');
+    const grid = document.getElementById(bar.dataset.filterTarget);
     if (!grid) return;
-    bar.addEventListener('click', event => {
-      const button = event.target.closest('[data-filter]');
-      if (!button) return;
-      bar.querySelectorAll('[data-filter]').forEach(item => {
-        const active = item === button;
-        item.classList.toggle('is-active', active);
-        item.setAttribute('aria-pressed', String(active));
-      });
-      grid.dataset.activeFilter = button.dataset.filter;
-      grid.dispatchEvent(new Event('galleryfilter'));
+    bar.querySelectorAll('[data-filter]').forEach(item => {
+      const active = item === button;
+      item.classList.toggle('is-active', active);
+      item.setAttribute('aria-pressed', String(active));
     });
-    grid.dataset.activeFilter = 'all';
-    if (grid.querySelector('[data-category]')) {
-      grid.addEventListener('galleryfilter', () => {
-        let count = 0;
-        grid.querySelectorAll('[data-category]').forEach(card => {
-          const show = grid.dataset.activeFilter === 'all' || card.dataset.category === grid.dataset.activeFilter;
-          card.hidden = !show;
-          if (show) count++;
-        });
-        const empty = grid.nextElementSibling;
-        if (empty?.classList.contains('filter-empty')) empty.hidden = count > 0;
-      });
-    }
+    grid.dataset.activeFilter = button.dataset.filter;
+    grid.dispatchEvent(new Event('galleryfilter', { bubbles: true }));
+  });
+  document.addEventListener('galleryfilter', event => {
+    const grid = event.target;
+    if (!grid.matches('#photos, #projects')) return;
+    let count = 0;
+    grid.querySelectorAll('[data-category]').forEach(card => {
+      const show = grid.dataset.activeFilter === 'all' || card.dataset.category === grid.dataset.activeFilter;
+      card.hidden = !show;
+      if (show) count++;
+    });
+    const empty = grid.nextElementSibling;
+    if (empty?.classList.contains('filter-empty')) empty.hidden = count > 0;
   });
 
   let previousFocus = null;
-  document.querySelectorAll('[data-lightbox-src]').forEach(button => button.addEventListener('click', () => {
+  document.addEventListener('click', event => {
+    const button = event.target.closest('[data-lightbox-src]');
+    if (!button) return;
     previousFocus = button;
     const overlay = document.createElement('div');
     overlay.className = 'lightbox';
@@ -54,5 +58,5 @@
     overlay.addEventListener('click', event => { if (event.target === overlay) dismiss(); });
     overlay.append(image, close); document.body.append(overlay); close.focus();
     document.addEventListener('keydown', onKey);
-  }));
+  });
 })();

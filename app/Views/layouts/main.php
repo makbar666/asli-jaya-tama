@@ -13,4 +13,7 @@
 <script src="<?= asset('js/video-gallery.js') ?>" defer></script>
 <script src="<?= asset('js/motion.js') ?>" defer></script>
 <script src="<?= asset('js/hero-stack.js') ?>" defer></script>
+<script src="<?= asset('js/cms-data.js') ?>" defer></script>
+<script src="<?= asset('js/cms-public.js') ?>" defer></script>
+<script src="<?= asset('js/cms-project.js') ?>" defer></script>
 </body></html>
