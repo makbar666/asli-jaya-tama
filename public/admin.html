@@ -5,6 +5,8 @@
   <meta name="robots" content="noindex,nofollow">
   <title>Kelola Konten | Asli Jaya Interior</title>
   <link rel="stylesheet" href="/assets/css/admin.css">
+  <script src="https://accounts.google.com/gsi/client" async defer></script>
+  <script src="/assets/js/drive-upload.js" defer></script>
   <script src="/assets/js/admin.js" defer></script>
 </head>
 <body class="admin-page">
@@ -42,6 +44,13 @@
             <div class="form-field form-wide" data-field="description"><label for="entry-description">Deskripsi</label><textarea id="entry-description" name="description" rows="4" maxlength="5000"></textarea></div>
             <div class="form-field form-wide" data-field="gallery"><label for="entry-gallery">Galeri foto tambahan</label><textarea id="entry-gallery" name="gallery" rows="3" placeholder="Satu URL gambar per baris"></textarea></div>
             <div class="form-field form-wide" data-field="drive"><label for="entry-drive">Link video Google Drive <span>*</span></label><input id="entry-drive" name="drive_url" type="url" maxlength="2000" placeholder="https://drive.google.com/file/d/.../view"><small>Tempel tautan file video, bukan tautan folder. Atur akses file agar dapat dilihat pengunjung.</small></div>
+            <div class="form-field form-wide drive-uploader" data-field="upload">
+              <label for="drive-upload-file">Atau unggah video langsung ke Google Drive</label>
+              <input id="drive-upload-file" type="file" accept="video/*,.mp4,.mov,.m4v,.webm,.mkv,.avi">
+              <div class="drive-upload-actions"><button class="admin-button-secondary" id="drive-upload-button" type="button" disabled>Hubungkan Google & unggah</button><button class="admin-button-secondary" id="drive-upload-cancel" type="button" hidden>Batalkan</button></div>
+              <progress id="drive-upload-progress" max="100" value="0" hidden></progress>
+              <small id="drive-upload-status" role="status">Memeriksa konfigurasi upload Google Drive...</small>
+            </div>
             <div class="form-field" data-field="location"><label for="entry-location">Lokasi (opsional)</label><input id="entry-location" name="location" maxlength="120"></div>
             <div class="form-field" data-field="year"><label for="entry-year">Tahun (opsional)</label><input id="entry-year" name="year" type="number" min="1900" max="2100"></div>
             <div class="form-field" data-field="width"><label for="entry-width">Lebar foto (px)</label><input id="entry-width" name="image_width" type="number" min="1" max="20000"></div>

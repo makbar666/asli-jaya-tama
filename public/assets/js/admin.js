@@ -7,6 +7,11 @@
   const editorMessage = document.getElementById('editor-message');
   const form = document.getElementById('content-form');
   const deleteButton = document.getElementById('delete-button');
+  const uploadFile = document.getElementById('drive-upload-file');
+  const uploadButton = document.getElementById('drive-upload-button');
+  const uploadCancel = document.getElementById('drive-upload-cancel');
+  const uploadProgress = document.getElementById('drive-upload-progress');
+  const uploadStatus = document.getElementById('drive-upload-status');
   const labels = {
     project: ['Proyek', 'Kelola informasi proyek custom dan galeri fotonya.'],
     photo: ['Foto', 'Kelola foto hasil pekerjaan yang tampil di Beranda dan Portofolio.'],
@@ -18,6 +23,8 @@
   let editing = null;
   let returnFocus = null;
   let slugTouched = false;
+  let driveConfig = null;
+  let uploadController = null;
 
   const keyOf = item => `${item.type}:${item.slug}`;
   const fallbackKeys = new Set();
@@ -55,6 +62,18 @@
     render();
   }
 
+  async function loadDriveConfig() {
+    try {
+      driveConfig = await api('/api/drive-config');
+      uploadStatus.textContent = driveConfig.enabled
+        ? 'Pilih file video, lalu hubungkan akun Google yang dapat mengunggah ke folder proyek.'
+        : 'Upload langsung belum aktif. Tambahkan Google OAuth Client ID di Vercel, atau tempel link Drive di atas.';
+    } catch {
+      uploadStatus.textContent = 'Upload langsung belum tersedia. Anda tetap dapat menempel link Drive di atas.';
+    }
+    uploadButton.disabled = !driveConfig?.enabled;
+  }
+
   function render() {
     const items = merged().filter(item => item.type === activeType);
     list.replaceChildren();
@@ -90,7 +109,7 @@
       const field = holder.dataset.field;
       const visible = field === 'description' || (field === 'alt' && type === 'photo') ||
         (field === 'gallery' && type === 'project') ||
-        (field === 'drive' && type === 'video') ||
+        (['drive', 'upload'].includes(field) && type === 'video') ||
         (['location', 'year'].includes(field) && type === 'project') ||
         (['width', 'height'].includes(field) && type === 'photo') ||
         (field === 'order' && type !== 'video');
@@ -105,6 +124,9 @@
     editing = item;
     slugTouched = Boolean(item);
     form.reset();
+    uploadProgress.hidden = true;
+    uploadProgress.value = 0;
+    uploadFile.value = '';
     form.elements.id.value = item?.id || '';
     form.elements.type.value = activeType;
     for (const name of ['title', 'slug', 'category', 'media_url', 'alt_text', 'description', 'location', 'year', 'image_width', 'image_height', 'sort_order', 'status']) {
@@ -126,6 +148,7 @@
   }
 
   function closeEditor() {
+    if (uploadController) { show(editorMessage, 'Batalkan unggahan sebelum menutup editor.', true); return; }
     editor.hidden = true;
     document.body.style.overflow = '';
     editing = null;
@@ -179,8 +202,67 @@
   editor.addEventListener('click', event => { if (event.target === editor) closeEditor(); });
   document.addEventListener('keydown', event => { if (event.key === 'Escape' && !editor.hidden) closeEditor(); });
 
+  uploadButton.addEventListener('click', async () => {
+    const file = uploadFile.files?.[0];
+    if (!window.AJTDriveUpload?.validVideo(file)) {
+      show(editorMessage, 'Pilih file video yang tidak kosong terlebih dahulu.', true);
+      return;
+    }
+    if (!driveConfig?.enabled || uploadController) return;
+    editorMessage.hidden = true;
+    uploadController = new AbortController();
+    uploadButton.disabled = true;
+    uploadFile.disabled = true;
+    uploadCancel.hidden = false;
+    uploadProgress.hidden = false;
+    uploadProgress.value = 0;
+    uploadStatus.textContent = 'Menghubungkan akun Google...';
+    try {
+      // Start the OAuth popup in the click event, before any awaited network work.
+      const tokenPromise = window.AJTDriveUpload.authorize(driveConfig.clientId);
+      const token = await tokenPromise;
+      uploadStatus.textContent = 'Mengunggah video langsung ke Google Drive...';
+      const result = await window.AJTDriveUpload.upload(file, {
+        token, folderId: driveConfig.folderId, signal: uploadController.signal,
+        onProgress: percent => {
+          uploadProgress.value = percent;
+          uploadStatus.textContent = `Mengunggah video ke Google Drive: ${percent}%`;
+        },
+      });
+      form.elements.drive_url.value = result.url;
+      if (!form.elements.media_url.value.trim()) form.elements.media_url.value = `https://drive.google.com/thumbnail?id=${result.id}&sz=w800`;
+      if (!form.elements.title.value.trim()) form.elements.title.value = file.name.replace(/\.[^.]+$/, '').replace(/[_-]+/g, ' ').trim();
+      if (!form.elements.category.value.trim()) form.elements.category.value = 'Dokumentasi Proyek';
+      if (!editing) {
+        const digest = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(result.id));
+        const suffix = [...new Uint8Array(digest)].map(byte => byte.toString(16).padStart(2, '0')).join('').slice(0, 12);
+        form.elements.slug.value = `drive-${suffix}`;
+        form.elements.slug.readOnly = true;
+        slugTouched = true;
+      }
+      if (!result.shared) {
+        form.elements.status.value = 'draft';
+        uploadStatus.textContent = 'Video tersimpan di Drive. Akses publik belum dapat diatur otomatis; periksa izin berbagi sebelum menayangkan.';
+      } else {
+        uploadStatus.textContent = 'Video tersimpan di Drive. Periksa data lalu tekan Simpan konten untuk menayangkan.';
+      }
+      uploadFile.value = '';
+    } catch (error) {
+      const cancelled = error.name === 'AbortError';
+      uploadStatus.textContent = cancelled ? 'Unggahan dibatalkan.' : error.message;
+      if (!cancelled) show(editorMessage, error.message, true);
+    } finally {
+      uploadController = null;
+      uploadCancel.hidden = true;
+      uploadFile.disabled = false;
+      uploadButton.disabled = !driveConfig?.enabled;
+    }
+  });
+  uploadCancel.addEventListener('click', () => uploadController?.abort());
+
   form.addEventListener('submit', async event => {
     event.preventDefault();
+    if (uploadController) { show(editorMessage, 'Tunggu sampai unggahan selesai atau batalkan terlebih dahulu.', true); return; }
     editorMessage.hidden = true;
     const saveButton = form.querySelector('[type="submit"]');
     saveButton.disabled = true;
@@ -218,7 +300,7 @@
   api('/api/auth').then(async data => {
     if (!data.authenticated) { location.replace('/login.html'); return; }
     document.getElementById('admin-email').textContent = data.email;
-    await load();
+    await Promise.all([load(), loadDriveConfig()]);
     main.hidden = false;
     loading.hidden = true;
   }).catch(error => { loading.textContent = error.message || 'CMS tidak dapat dimuat.'; });

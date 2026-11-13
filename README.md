@@ -53,6 +53,19 @@ CMS tersedia di `/login.html` setelah database dan variabel lingkungan dikonfigu
 
 Admin dapat mengisi URL foto `/assets/...` yang sudah ada, atau URL gambar HTTPS dari penyimpanan eksternal. **Database hanya menyimpan metadata dan tautan; CMS ini belum mengunggah file gambar.** Untuk menambah foto ke folder `public/assets/`, unggah lewat Git dan deploy ulang; untuk video, tempel tautan file Google Drive pada formulir CMS. ID file diambil dan divalidasi oleh API. Tautan folder tidak didukung. Desain, bahan, dan konten bisnis lain masih di file konfigurasi. Halaman detail proyek yang dibuat lewat CMS memakai `/proyek?slug=...`; isinya langsung diperbarui dari Neon, tetapi metadata SEO per proyek memerlukan pengembangan server rendering atau build ulang.
 
+### Upload video langsung dari CMS ke Google Drive
+
+Formulir Video mendukung memilih file dan mengunggahnya langsung dari browser admin ke folder Drive `1lIegtho751s1vbYxGzqPKypC8QcPZVa_`. Browser meminta izin akun Google melalui OAuth, memeriksa akses tulis ke folder, lalu memulai unggahan resumable dan menampilkan progres. File video tidak melewati Vercel atau Neon; token Google hanya disimpan sementara di memori browser. Setelah berhasil, CMS mengisi tautan, thumbnail Drive, judul, kategori, dan slug yang cocok dengan sinkronisasi folder. **Tekan Simpan konten** untuk menerbitkan di situs tanpa menunggu sinkronisasi terjadwal. Bila pengaturan berbagi otomatis gagal, status diubah menjadi Draf agar izin file dapat diperiksa dahulu. Admin tetap dapat menempel link Drive secara manual.
+
+Aktivasi memerlukan konfigurasi Google Cloud milik pemilik akun Drive:
+
+1. Di Google Cloud, aktifkan **Google Drive API**. Konfigurasi OAuth consent screen dan tambahkan akun Google pengelola folder sebagai test user jika aplikasi masih berstatus Testing.
+2. Buat **OAuth 2.0 Client ID** bertipe **Web application**. Tambahkan `https://asli-jaya-tama.vercel.app` pada **Authorized JavaScript origins**. Tambahkan juga domain produksi lain bila dipakai. Tidak perlu client secret untuk alur browser ini.
+3. Simpan Client ID tersebut sebagai variabel lingkungan `GOOGLE_OAUTH_CLIENT_ID` di **Vercel → Project Settings → Environment Variables → Production**, lalu deploy ulang. `DRIVE_UPLOAD_FOLDER_ID` opsional; nilai bawaan sudah folder di atas.
+4. Masuk ke CMS, buka Video, pilih file, klik **Hubungkan Google & unggah**, lalu pilih akun Google yang mempunyai izin menambah file ke folder. Tinjau link, thumbnail, dan status berbagi sebelum menekan **Simpan konten**.
+
+Alur ini meminta cakupan Drive untuk mengakses folder yang sudah ada dan mengatur izin baca video baru. Cakupan tersebut termasuk kategori restricted menurut Google; aplikasi OAuth mungkin memerlukan proses verifikasi Google sebelum dipakai secara luas. Pemakaian oleh satu admin dapat diuji melalui test user. Jangan menaruh access token atau client secret Google di Git atau browser storage. File yang telanjur terunggah tetap berada di Drive jika admin menutup editor sebelum menekan Simpan konten.
+
 Situs PHP di cPanel tetap dapat berjalan memakai konten konfigurasi. API CMS menggunakan Vercel Functions (Node.js tanpa proses yang terus berjalan), sehingga halaman CMS memerlukan Vercel dan tidak tersedia pada deploy cPanel standar. Untuk pengujian lokal lengkap, bangun `dist/` dengan PHP, lalu jalankan `npx vercel dev` dengan variabel lingkungan Neon yang sudah diatur pada proyek Vercel terhubung. Server PHP lokal sendiri hanya menyajikan halaman publik dan tidak menjalankan API Vercel.
 
 ### Sinkronisasi video Drive otomatis

@@ -25,7 +25,7 @@ header('X-Content-Type-Options: nosniff');
 header('Referrer-Policy: strict-origin-when-cross-origin');
 header('X-Frame-Options: SAMEORIGIN');
 header('Permissions-Policy: camera=(), microphone=(), geolocation=()');
-header("Content-Security-Policy: default-src 'self'; img-src 'self' data: https:; style-src 'self' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; script-src 'self'; frame-src https://drive.google.com; connect-src 'self'; form-action 'self'; base-uri 'self'; object-src 'none'");
+header("Content-Security-Policy: default-src 'self'; img-src 'self' data: https:; style-src 'self' https://fonts.googleapis.com https://accounts.google.com/gsi/style; font-src 'self' https://fonts.gstatic.com; script-src 'self' https://accounts.google.com/gsi/client; frame-src https://drive.google.com https://accounts.google.com/gsi/; connect-src 'self' https://accounts.google.com/gsi/ https://www.googleapis.com; form-action 'self'; base-uri 'self'; object-src 'none'");
 
 $requestPath = parse_url($_SERVER['REQUEST_URI'] ?? '/', PHP_URL_PATH);
 if ($requestPath === '/sitemap.xml') {
