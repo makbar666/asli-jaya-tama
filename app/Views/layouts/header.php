@@ -19,6 +19,6 @@ $ogImage = $site['hero_image'] ?? null;
 <?php if ($site['logo']): ?><link rel="icon" type="image/png" href="<?= e($site['logo']) ?>"><?php endif; ?>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Libre+Baskerville:wght@400;700&display=swap" rel="stylesheet">
-<?php foreach (['variables','base','layout','components','responsive','motion','branding','videos','hero-stack','photos','process','intro-photo','social-video'] as $css): ?><link rel="stylesheet" href="<?= asset('css/'.$css.'.css') ?>"><?php endforeach; ?>
+<?php foreach (['variables','base','layout','components','responsive','motion','branding','videos','hero-stack','photos','process','intro-photo','social-video','service-photo'] as $css): ?><link rel="stylesheet" href="<?= asset('css/'.$css.'.css') ?>"><?php endforeach; ?>
 <?php if ($base): ?><script type="application/ld+json"><?= json_encode(['@context'=>'https://schema.org','@type'=>'HomeAndConstructionBusiness','name'=>$site['company'],'url'=>$base,'telephone'=>'+'.$site['whatsapp_international'],'sameAs'=>array_values(array_filter([$site['instagram_url'],$site['tiktok_url'] ?? null,$site['official_url']]))], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_HEX_TAG | JSON_HEX_AMP) ?></script><?php endif; ?>
 </head>

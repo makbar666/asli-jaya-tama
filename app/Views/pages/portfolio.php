@@ -1,4 +1,4 @@
-<section class="page-intro"><div class="container page-intro-inner"><span class="eyebrow">HASIL PEKERJAAN</span><h1>Portofolio</h1><p>Dokumentasi foto pekerjaan CV Asli Jaya Tama. Pilih kategori untuk melihat detail yang sesuai kebutuhan Anda.</p></div></section>
+<section class="page-intro"><div class="container page-intro-inner"><span class="eyebrow">DOKUMENTASI CUSTOM</span><h1>Portofolio</h1><p>Lihat contoh furniture dan elemen ruang yang dikerjakan sesuai ukuran, fungsi, dan tampilan yang dibutuhkan.</p></div></section>
 <section class="section"><div class="container">
   <?php if ($projects): ?>
     <?php $categories = array_values(array_unique(array_map(fn($p) => $p['category'], $projects))); ?>
@@ -14,7 +14,7 @@
     <div class="photo-grid portfolio-photos" id="photos"><?php foreach ($photos as $photo) partial('photo-card', ['photo' => $photo]); ?></div>
     <p class="filter-empty" hidden>Tidak ada foto dalam kategori ini.</p>
   <?php elseif (!$projects): ?>
-    <div class="empty-page"><span class="eyebrow">DOKUMENTASI PROYEK</span><h2>Portofolio sedang dipersiapkan.</h2><p>Foto dan informasi pekerjaan akan ditampilkan di sini setelah tersedia.</p><a class="button button-dark" href="<?= e(wa_link('Halo, saya ingin melihat contoh pekerjaan dan konsultasi proyek.')) ?>" target="_blank" rel="noopener">Tanya via WhatsApp <span aria-hidden="true">↗</span></a></div>
+    <div class="empty-page"><span class="eyebrow">DOKUMENTASI PROYEK</span><h2>Portofolio sedang dipersiapkan.</h2><p>Foto dan informasi pekerjaan akan ditampilkan di sini setelah tersedia.</p><a class="button button-dark" href="<?= e(wa_link('Halo, saya ingin melihat contoh pengerjaan custom dan berdiskusi tentang kebutuhan saya.')) ?>" target="_blank" rel="noopener">Tanya via WhatsApp <span aria-hidden="true">↗</span></a></div>
   <?php endif; ?>
 </div></section>
 <?php partial('social-video-cta', ['heading' => 'Lihat Video Pengerjaan Kami', 'copy' => 'Ingin melihat detail pekerjaan dalam video? Kunjungi Instagram atau TikTok resmi kami.']); ?>

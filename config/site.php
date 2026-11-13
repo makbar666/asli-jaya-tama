@@ -2,7 +2,7 @@
 return [
     'company' => 'CV Asli Jaya Tama',
     'brand' => 'Asli Jaya Interior',
-    'tagline' => 'Furniture custom, interior & eksterior',
+    'tagline' => 'Pengerjaan custom sesuai kebutuhan ruang',
     'whatsapp_display' => '0878 3303 3215',
     'whatsapp_international' => '6287833033215',
     'instagram_handle' => '@cv_aslijayatama',
@@ -22,5 +22,5 @@ return [
     ],
     'about_image' => '/assets/images/hero/4.jpeg',
     'production_url' => null, // set to https://your-domain.tld for canonical URLs
-    'seo_description' => 'CV Asli Jaya Tama melayani kebutuhan furniture custom, interior, eksterior, serta pekerjaan rumah dan bangunan. Konsultasikan proyek Anda melalui WhatsApp.',
+    'seo_description' => 'CV Asli Jaya Tama mengerjakan furniture dan elemen ruang custom. Diskusikan desain, ukuran, pilihan bahan, dan finishing sesuai kebutuhan proyek Anda.',
 ];
