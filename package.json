@@ -4,6 +4,8 @@
   "version": "1.0.0",
   "description": "Neon-backed content API for Asli Jaya Interior",
   "dependencies": {
+    "@neon/config": "^1.14.0",
+    "@neon/env": "^2.1.3",
     "@neondatabase/serverless": "1.2.0"
   }
 }
