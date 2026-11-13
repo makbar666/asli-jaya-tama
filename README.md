@@ -1,6 +1,6 @@
 # CV Asli Jaya Tama — Company Profile
 
-Website PHP 8.2+ tanpa database, framework, Composer, atau proses Node di server. Seluruh teks antarmuka berbahasa Indonesia. Galeri foto memakai lima foto yang tersedia di `public/assets/images/hero/`; daftar proyek detail tetap kosong sampai informasi proyek terverifikasi. Logo resmi berada di `public/assets/images/logo.png`.
+Website utama memakai PHP 8.2+ tanpa framework, Composer, atau proses Node di server. CMS opsional memakai database Neon dan Vercel Functions; situs publik tetap menampilkan konten bawaan ketika Neon belum dikonfigurasi. Seluruh teks antarmuka berbahasa Indonesia. Galeri foto memakai lima foto yang tersedia di `public/assets/images/hero/`; daftar proyek detail tetap kosong sampai informasi proyek terverifikasi. Logo resmi berada di `public/assets/images/logo.png`.
 
 Posisi utama situs adalah **pengerjaan furniture dan elemen ruang custom**. Teks Beranda, Tentang Kami, Layanan, Kontak, CTA, dan SEO menekankan diskusi kebutuhan, desain, ukuran, bahan, serta finishing. Nama brand pada logo tetap **Asli Jaya Interior**. Formulir kontak memiliki kolom opsional untuk pilihan bahan atau finishing; isinya hanya diteruskan ke WhatsApp dan tidak disimpan.
 
