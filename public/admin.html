@@ -41,13 +41,12 @@
             <div class="form-field form-wide" data-field="alt"><label for="entry-alt">Teks alternatif foto <span>*</span></label><input id="entry-alt" name="alt_text" maxlength="200" placeholder="Jelaskan apa yang terlihat pada foto"></div>
             <div class="form-field form-wide" data-field="description"><label for="entry-description">Deskripsi</label><textarea id="entry-description" name="description" rows="4" maxlength="5000"></textarea></div>
             <div class="form-field form-wide" data-field="gallery"><label for="entry-gallery">Galeri foto tambahan</label><textarea id="entry-gallery" name="gallery" rows="3" placeholder="Satu URL gambar per baris"></textarea></div>
-            <div class="form-field" data-field="drive"><label for="entry-drive">ID file Google Drive <span>*</span></label><input id="entry-drive" name="drive_file_id" maxlength="100" placeholder="ID dari tautan /file/d/ID/view"></div>
-            <div class="form-field" data-field="duration"><label for="entry-duration">Durasi (opsional)</label><input id="entry-duration" name="duration" maxlength="30" placeholder="01:25"></div>
+            <div class="form-field form-wide" data-field="drive"><label for="entry-drive">Link video Google Drive <span>*</span></label><input id="entry-drive" name="drive_url" type="url" maxlength="2000" placeholder="https://drive.google.com/file/d/.../view"><small>Tempel tautan file video, bukan tautan folder. Atur akses file agar dapat dilihat pengunjung.</small></div>
             <div class="form-field" data-field="location"><label for="entry-location">Lokasi (opsional)</label><input id="entry-location" name="location" maxlength="120"></div>
             <div class="form-field" data-field="year"><label for="entry-year">Tahun (opsional)</label><input id="entry-year" name="year" type="number" min="1900" max="2100"></div>
             <div class="form-field" data-field="width"><label for="entry-width">Lebar foto (px)</label><input id="entry-width" name="image_width" type="number" min="1" max="20000"></div>
             <div class="form-field" data-field="height"><label for="entry-height">Tinggi foto (px)</label><input id="entry-height" name="image_height" type="number" min="1" max="20000"></div>
-            <div class="form-field"><label for="entry-order">Urutan tampil</label><input id="entry-order" name="sort_order" type="number" min="0" max="100000" value="100"></div>
+            <div class="form-field" data-field="order"><label for="entry-order">Urutan tampil</label><input id="entry-order" name="sort_order" type="number" min="0" max="100000" value="100"></div>
             <div class="form-field"><label for="entry-status">Status</label><select id="entry-status" name="status"><option value="published">Tayang</option><option value="draft">Draf</option><option value="hidden">Sembunyikan</option></select></div>
             <label class="form-check"><input name="featured" type="checkbox"> Tampilkan di Beranda</label>
           </div>

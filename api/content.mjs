@@ -22,10 +22,28 @@ function validMedia(value) {
   } catch { return false; }
 }
 
+export function driveFileId(value) {
+  if (typeof value !== 'string' || value.length > 2000) return null;
+  try {
+    const url = new URL(value.trim());
+    if (url.protocol !== 'https:' || url.hostname !== 'drive.google.com' || url.username || url.password) return null;
+    const filePath = /^\/file\/d\/([A-Za-z0-9_-]{10,100})(?:\/(?:view|preview|edit))?\/?$/.exec(url.pathname);
+    if (filePath) return filePath[1];
+    if (url.pathname === '/open' || url.pathname === '/uc') {
+      const id = url.searchParams.get('id');
+      return drivePattern.test(id || '') ? id : null;
+    }
+  } catch { return null; }
+  return null;
+}
+
 export function validateEntry(input) {
   const type = string(input.type, 20);
   const slug = string(input.slug, 100);
   const status = string(input.status, 20) || 'draft';
+  const suppliedDriveUrl = string(input.drive_url, 2000);
+  const legacyDriveId = string(input.drive_file_id, 100);
+  const parsedDriveId = suppliedDriveUrl ? driveFileId(suppliedDriveUrl) : (drivePattern.test(legacyDriveId) ? legacyDriveId : null);
   if (!TYPES.has(type) || !slugPattern.test(slug) || slug.length > 100 || !STATUSES.has(status)) {
     throw Object.assign(new Error('Jenis konten, slug, atau status tidak valid.'), { status: 400 });
   }
@@ -37,7 +55,7 @@ export function validateEntry(input) {
     media_url: string(input.media_url, 2000),
     alt_text: string(input.alt_text, 200),
     gallery: Array.isArray(input.gallery) ? input.gallery : [],
-    drive_file_id: string(input.drive_file_id, 100) || null,
+    drive_file_id: parsedDriveId,
     duration: string(input.duration, 30) || null,
     location: string(input.location, 120) || null,
     year: input.year === '' || input.year == null ? null : Number(input.year),
@@ -51,7 +69,7 @@ export function validateEntry(input) {
       throw Object.assign(new Error('Judul, kategori, deskripsi, atau URL gambar tidak valid.'), { status: 400 });
     }
     if (type === 'video' && !drivePattern.test(data.drive_file_id || '')) {
-      throw Object.assign(new Error('ID file Google Drive tidak valid.'), { status: 400 });
+      throw Object.assign(new Error('Link file video Google Drive tidak valid. Gunakan tautan file, bukan folder.'), { status: 400 });
     }
     if (type === 'photo' && (!data.alt_text || data.alt_text.length > 200)) {
       throw Object.assign(new Error('Teks alternatif foto wajib diisi.'), { status: 400 });

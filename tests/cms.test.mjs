@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { scryptSync } from 'node:crypto';
 import { sameOrigin, sessionCookie, verifyPassword } from '../server/cms-lib.mjs';
-import { validateEntry } from '../api/content.mjs';
+import { driveFileId, validateEntry } from '../api/content.mjs';
 
 const photo = {
   type: 'photo', slug: 'lemari-custom', title: 'Lemari Custom', category: 'Furniture Custom',
@@ -17,9 +17,14 @@ test('menerima foto valid dan menolak media berbahaya', () => {
   assert.throws(() => validateEntry({ ...photo, slug: '../admin' }), /slug/);
 });
 
-test('video memerlukan ID Google Drive yang valid', () => {
-  assert.throws(() => validateEntry({ ...photo, type: 'video', drive_file_id: 'invalid' }), /Google Drive/);
-  assert.equal(validateEntry({ ...photo, type: 'video', drive_file_id: '1PkjflTHTR87KH4i_XQWk3dE_O42YbBST' }).type, 'video');
+test('video menerima tautan file Google Drive dan menolak folder atau domain lain', () => {
+  const id = '1PkjflTHTR87KH4i_XQWk3dE_O42YbBST';
+  assert.equal(driveFileId(`https://drive.google.com/file/d/${id}/view?usp=sharing`), id);
+  assert.equal(driveFileId(`https://drive.google.com/open?id=${id}`), id);
+  assert.equal(driveFileId(`https://drive.google.com/drive/folders/${id}`), null);
+  assert.equal(driveFileId(`https://drive.google.com.evil.test/file/d/${id}/view`), null);
+  assert.throws(() => validateEntry({ ...photo, type: 'video', drive_url: `https://drive.google.com/drive/folders/${id}` }), /Google Drive/);
+  assert.equal(validateEntry({ ...photo, type: 'video', drive_url: `https://drive.google.com/file/d/${id}/view` }).drive_file_id, id);
 });
 
 test('tombstone dapat menyembunyikan konten awal', () => {

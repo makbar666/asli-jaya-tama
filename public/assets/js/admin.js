@@ -90,13 +90,14 @@
       const field = holder.dataset.field;
       const visible = field === 'description' || (field === 'alt' && type === 'photo') ||
         (field === 'gallery' && type === 'project') ||
-        (['drive', 'duration'].includes(field) && type === 'video') ||
+        (field === 'drive' && type === 'video') ||
         (['location', 'year'].includes(field) && type === 'project') ||
-        (['width', 'height'].includes(field) && type === 'photo');
+        (['width', 'height'].includes(field) && type === 'photo') ||
+        (field === 'order' && type !== 'video');
       holder.hidden = !visible;
     }
     form.elements.alt_text.required = type === 'photo';
-    form.elements.drive_file_id.required = type === 'video';
+    form.elements.drive_url.required = type === 'video';
   }
 
   function openEditor(item = null) {
@@ -106,9 +107,10 @@
     form.reset();
     form.elements.id.value = item?.id || '';
     form.elements.type.value = activeType;
-    for (const name of ['title', 'slug', 'category', 'media_url', 'alt_text', 'description', 'drive_file_id', 'duration', 'location', 'year', 'image_width', 'image_height', 'sort_order', 'status']) {
+    for (const name of ['title', 'slug', 'category', 'media_url', 'alt_text', 'description', 'location', 'year', 'image_width', 'image_height', 'sort_order', 'status']) {
       if (item?.[name] !== undefined && item[name] !== null) form.elements[name].value = item[name];
     }
+    form.elements.drive_url.value = item?.drive_file_id ? `https://drive.google.com/file/d/${item.drive_file_id}/view` : '';
     form.elements.gallery.value = Array.isArray(item?.gallery) ? item.gallery.join('\n') : '';
     form.elements.featured.checked = Boolean(item?.featured);
     if (!item) { form.elements.status.value = 'published'; form.elements.sort_order.value = '100'; }
@@ -141,8 +143,7 @@
       alt_text: form.elements.alt_text.value.trim() || form.elements.title.value.trim(),
       description: form.elements.description.value.trim(),
       gallery: form.elements.gallery.value.split(/\r?\n/).map(url => url.trim()).filter(Boolean),
-      drive_file_id: form.elements.drive_file_id.value.trim(),
-      duration: form.elements.duration.value.trim(),
+      drive_url: form.elements.drive_url.value.trim(),
       location: form.elements.location.value.trim(),
       year: form.elements.year.value,
       image_width: form.elements.image_width.value,
