@@ -1,6 +1,6 @@
 # CV Asli Jaya Tama — Company Profile
 
-Website utama memakai PHP 8.2+ tanpa framework, Composer, atau proses Node di server. CMS opsional memakai database Neon dan Vercel Functions; situs publik tetap menampilkan konten bawaan ketika Neon belum dikonfigurasi. Seluruh teks antarmuka berbahasa Indonesia. Galeri foto memakai lima foto yang tersedia di `public/assets/images/hero/`; daftar proyek detail tetap kosong sampai informasi proyek terverifikasi. Logo resmi berada di `public/assets/images/logo.png`.
+Website utama memakai PHP 8.2+ tanpa framework, Composer, atau proses Node di server. Data CMS lama dapat dibaca dari Neon melalui Vercel Functions; situs publik tetap menampilkan konten bawaan ketika Neon belum dikonfigurasi. Seluruh teks antarmuka berbahasa Indonesia. Galeri foto memakai lima foto yang tersedia di `public/assets/images/hero/`; daftar proyek detail tetap kosong sampai informasi proyek terverifikasi. Logo resmi berada di `public/assets/images/logo.png`.
 
 Posisi utama situs adalah **pengerjaan furniture dan elemen ruang custom**. Teks Beranda, Tentang Kami, Layanan, Kontak, CTA, dan SEO menekankan diskusi kebutuhan, desain, ukuran, bahan, serta finishing. Nama brand pada logo tetap **Asli Jaya Interior**. Formulir kontak memiliki kolom opsional untuk pilihan bahan atau finishing; isinya hanya diteruskan ke WhatsApp dan tidak disimpan.
 
@@ -40,42 +40,19 @@ Vercel memakai hasil statis di `dist/`; PHP **tidak dijalankan** di Vercel. Apli
 
 Setelah mengubah `config/projects.php`, `config/photos.php`, `config/videos.php`, `config/services.php`, atau kontak secara manual, **jalankan build statis ulang** dan deploy ulang `dist/`. Perubahan file PHP saja tidak mengubah halaman yang sudah dihosting di Vercel. File proyek PHP dan konfigurasi tidak disajikan kepada pengunjung karena Vercel hanya menayangkan isi `dist/`.
 
-### CMS dengan database Neon
+### Konten lama dari database Neon
 
-CMS tersedia di `/login.html` setelah database dan variabel lingkungan dikonfigurasi. Editor berada di `/admin.html` dan mengelola **proyek, foto, serta video**. Konten awal dari file PHP tetap tampil; perubahan CMS di Neon mengganti entri yang memiliki jenis dan slug sama. Video baru dari sinkronisasi Drive tetap muncul sebagai konten awal. Konten yang disembunyikan melalui CMS tidak tampil di situs.
-
-1. Buat proyek PostgreSQL gratis di [Neon](https://neon.com/). Salin *connection string* yang memakai SSL.
-2. Buka **SQL Editor** Neon dan jalankan seluruh isi `database/schema.sql` satu kali.
-3. Jalankan `npm ci` di komputer pengembangan. Lalu jalankan `node scripts/hash-password.mjs` dan ketik kata sandi admin minimal 12 karakter. Skrip mencetak hash; kata sandi asli tidak perlu disimpan di repo.
-4. Buat rahasia sesi dengan `node -e "console.log(require('node:crypto').randomBytes(32).toString('base64url'))"`.
-5. Di **Vercel → Project Settings → Environment Variables**, tambahkan `DATABASE_URL`, `CMS_ADMIN_EMAIL`, `CMS_PASSWORD_HASH`, dan `CMS_SESSION_SECRET`. Simpan keempatnya sebagai **Secret** untuk Production. Lihat `.env.example` untuk nama variabel. Jangan menaruh nilainya di Git atau JavaScript browser.
-6. Deploy ulang proyek Vercel, lalu buka `/login.html`. Jika login menampilkan pesan belum dikonfigurasi, periksa variabel dan jalankan ulang deployment. Jika muncul kesalahan server, pastikan tabel SQL sudah dibuat.
-
-Admin dapat mengisi URL foto `/assets/...` yang sudah ada, atau URL gambar HTTPS dari penyimpanan eksternal. **Database hanya menyimpan metadata dan tautan; CMS ini belum mengunggah file gambar.** Untuk menambah foto ke folder `public/assets/`, unggah lewat Git dan deploy ulang; untuk video, tempel tautan file Google Drive pada formulir CMS. ID file diambil dan divalidasi oleh API. Tautan folder tidak didukung. Desain, bahan, dan konten bisnis lain masih di file konfigurasi. Halaman detail proyek yang dibuat lewat CMS memakai `/proyek?slug=...`; isinya langsung diperbarui dari Neon, tetapi metadata SEO per proyek memerlukan pengembangan server rendering atau build ulang.
-
-### Upload video langsung dari CMS ke Google Drive
-
-Formulir Video mendukung memilih file dan mengunggahnya langsung dari browser admin ke folder Drive `1lIegtho751s1vbYxGzqPKypC8QcPZVa_`. Browser meminta izin akun Google melalui OAuth, memeriksa akses tulis ke folder, lalu memulai unggahan resumable dan menampilkan progres. File video tidak melewati Vercel atau Neon; token Google hanya disimpan sementara di memori browser. Setelah berhasil, CMS mengisi tautan, thumbnail Drive, judul, kategori, dan slug yang cocok dengan sinkronisasi folder. **Tekan Simpan konten** untuk menerbitkan di situs tanpa menunggu sinkronisasi terjadwal. Bila pengaturan berbagi otomatis gagal, status diubah menjadi Draf agar izin file dapat diperiksa dahulu. Admin tetap dapat menempel link Drive secara manual.
-
-Aktivasi memerlukan konfigurasi Google Cloud milik pemilik akun Drive:
-
-1. Di Google Cloud, aktifkan **Google Drive API**. Konfigurasi OAuth consent screen dan tambahkan akun Google pengelola folder sebagai test user jika aplikasi masih berstatus Testing.
-2. Buat **OAuth 2.0 Client ID** bertipe **Web application**. Tambahkan `https://asli-jaya-tama.vercel.app` pada **Authorized JavaScript origins**. Tambahkan juga domain produksi lain bila dipakai. Tidak perlu client secret untuk alur browser ini.
-3. Simpan Client ID tersebut sebagai variabel lingkungan `GOOGLE_OAUTH_CLIENT_ID` di **Vercel → Project Settings → Environment Variables → Production**, lalu deploy ulang. `DRIVE_UPLOAD_FOLDER_ID` opsional; nilai bawaan sudah folder di atas.
-4. Masuk ke CMS, buka Video, pilih file, klik **Hubungkan Google & unggah**, lalu pilih akun Google yang mempunyai izin menambah file ke folder. Tinjau link, thumbnail, dan status berbagi sebelum menekan **Simpan konten**.
-
-Alur ini meminta cakupan Drive untuk mengakses folder yang sudah ada dan mengatur izin baca video baru. Cakupan tersebut termasuk kategori restricted menurut Google; aplikasi OAuth mungkin memerlukan proses verifikasi Google sebelum dipakai secara luas. Pemakaian oleh satu admin dapat diuji melalui test user. Jangan menaruh access token atau client secret Google di Git atau browser storage. File yang telanjur terunggah tetap berada di Drive jika admin menutup editor sebelum menekan Simpan konten.
-
-Situs PHP di cPanel tetap dapat berjalan memakai konten konfigurasi. API CMS menggunakan Vercel Functions (Node.js tanpa proses yang terus berjalan), sehingga halaman CMS memerlukan Vercel dan tidak tersedia pada deploy cPanel standar. Untuk pengujian lokal lengkap, bangun `dist/` dengan PHP, lalu jalankan `npx vercel dev` dengan variabel lingkungan Neon yang sudah diatur pada proyek Vercel terhubung. Server PHP lokal sendiri hanya menyajikan halaman publik dan tidak menjalankan API Vercel.
-
+Konten yang sebelumnya diterbitkan melalui CMS tetap dibaca dari Neon selama DATABASE_URL tersedia di Vercel. Data tidak dapat diubah melalui website. Kelola foto dan video baru melalui folder Drive pada bagian berikut.
 ### Sinkronisasi video Drive otomatis
 
-Workflow `.github/workflows/sync-drive-videos.yml` memeriksa folder Drive setiap 30 menit (menit 17 dan 47 UTC) dan bisa dijalankan manual dari tab **Actions → Sync Google Drive videos → Run workflow**. Pemeriksaan terjadwal dapat terlambat; unggahan baru tidak muncul seketika. Workflow ini:
+Workflow `.github/workflows/sync-drive-videos.yml` memeriksa foto dan video dalam folder Drive yang sama setiap 30 menit (menit 17 dan 47 UTC) dan bisa dijalankan manual dari tab **Actions → Sync Google Drive videos → Run workflow**. Pemeriksaan terjadwal dapat terlambat; unggahan baru tidak muncul seketika. Workflow ini:
 
 1. Membaca file video dari folder Drive publik `1lIegtho751s1vbYxGzqPKypC8QcPZVa_`.
 2. Menambahkan hanya ID yang belum ada. Judul/kategori video yang sudah dikurasi di `config/videos.php` tidak ditimpa. Video baru diberi kategori netral **Dokumentasi Proyek** dan thumbnail asli dari Drive.
 3. Menyimpan metadata baru di `config/drive_videos.json`, membangun ulang `dist/`, memeriksa aset, lalu commit dan push ke `main` jika ada perubahan.
 4. Jika repo ini sudah terhubung sebagai Git project Vercel dengan `main` sebagai production branch, push tersebut memicu deploy baru.
+
+Untuk foto, unggah file JPG, PNG, atau WebP ke folder yang sama. Sistem mengunduh pratinjau Drive berukuran hingga 1600 piksel, menambahkan foto ke Portofolio dan bagian foto Beranda, lalu membangun ulang situs. Nama file menjadi judul; kategori otomatis adalah Dokumentasi Proyek. Folder dan foto harus dapat diakses publik. Seperti video, foto yang dihapus dari Drive tidak otomatis dihapus dari website dan perubahan nama file tidak memperbarui judul yang sudah tersimpan. Foto baru diproses saat sinkronisasi berikutnya.
 
 Folder dan setiap video baru perlu dapat dibuka oleh pengunjung melalui tautan publik. Sinkronisasi **menambah** video baru; menghapus file di Drive tidak otomatis menghapus entri dari website. Ini mencegah video hilang karena kesalahan sementara saat membaca folder.
 
