@@ -9,6 +9,7 @@ on:
     paths:
       - '.github/workflows/sync-drive-videos.yml'
       - 'scripts/sync_drive_videos.py'
+      - 'scripts/sync_drive_photos.py'
 
 permissions:
   contents: write
@@ -38,18 +39,23 @@ jobs:
           DRIVE_FOLDER_ID: 1lIegtho751s1vbYxGzqPKypC8QcPZVa_
           GOOGLE_DRIVE_API_KEY: ${{ secrets.GOOGLE_DRIVE_API_KEY }}
         run: python scripts/sync_drive_videos.py
+      - name: Read folder and add new photos
+        env:
+          DRIVE_FOLDER_ID: 1lIegtho751s1vbYxGzqPKypC8QcPZVa_
+          GOOGLE_DRIVE_API_KEY: ${{ secrets.GOOGLE_DRIVE_API_KEY }}
+        run: python scripts/sync_drive_photos.py
       - name: Rebuild static website
         run: php scripts/build-static.php
       - name: Verify generated links and assets
         run: node scripts/verify-static.js
       - name: Commit and push new videos
         run: |
-          git add config/drive_videos.json public/assets/images/thumbnails dist
+          git add config/drive_videos.json config/drive_photos.json public/assets/images/thumbnails public/assets/images/drive-photos dist
           if git diff --cached --quiet; then
             echo "No new videos"
             exit 0
           fi
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git commit -m "Sync new Google Drive videos"
+          git commit -m "Sync Google Drive photos and videos"
           git push origin HEAD:main
